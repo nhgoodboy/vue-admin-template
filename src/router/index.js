@@ -73,6 +73,27 @@ export const constantRouterMap = [
   },
 
   {
+    path: '/system',
+    component: Layout,
+    name: 'System',
+    meta: { title: 'System', icon: 'example' },
+    children: [
+      {
+        path: 'user',
+        name: 'User',
+        component: () => import('@/views/system/user/index'),
+        meta: { title: 'User', icon: 'form' }
+      },
+      {
+        path: 'role',
+        name: 'Role',
+        component: () => import('@/views/system/role/index'),
+        meta: { title: 'Role', icon: 'form' }
+      }
+    ]
+  },
+
+  {
     path: '/form',
     component: Layout,
     children: [
