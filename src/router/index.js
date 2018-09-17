@@ -22,6 +22,18 @@ import Layout from '../views/layout/Layout'
   }
 **/
 export const constantRouterMap = [
+  {
+    path: '/redirect',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: '/redirect/:path*',
+        component: () => import('@/views/redirect/index')
+      }
+    ]
+  },
+
   { path: '/login', component: () => import('@/views/login/index'), hidden: true },
   { path: '/404', component: () => import('@/views/404'), hidden: true },
 
@@ -62,6 +74,7 @@ export const constantRouterMap = [
   {
     path: '/test',
     component: Layout,
+    redirect: '/test/index',
     children: [
       {
         path: 'index',
@@ -75,6 +88,7 @@ export const constantRouterMap = [
   {
     path: '/system',
     component: Layout,
+    redirect: '/system/user',
     name: 'System',
     meta: { title: 'System', icon: 'example' },
     children: [

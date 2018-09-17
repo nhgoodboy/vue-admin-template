@@ -39,36 +39,36 @@
 </template>
 
 <script>
-  import { fetchList } from '@/api/user'
+import { fetchList } from '@/api/user'
 
-  export default {
-    data() {
-      return {
-        list: [],
-        listLoading: true,
-        total: 0,
-      }
-    },
+export default {
+  data() {
+    return {
+      list: [],
+      listLoading: true,
+      total: 0
+    }
+  },
 
-    created() {
-      this.getList()
-    },
+  created() {
+    this.getList()
+  },
 
-    mounted(){
+  mounted() {
 
-    },
+  },
 
-    methods: {
-      getList() {
-        this.listLoading = true
-        fetchList(this.listQuery).then(response => {
-          this.list = response.data
-          // Just to simulate the time of the request
-          setTimeout(() => {
-            this.listLoading = false
-          }, 1.5 * 1000)
-        })
-      },
+  methods: {
+    getList() {
+      this.listLoading = true
+      fetchList(this.listQuery).then(response => {
+        this.list = response.data
+        // Just to simulate the time of the request
+        setTimeout(() => {
+          this.listLoading = false
+        }, 1.5 * 1000)
+      })
     }
   }
+}
 </script>
