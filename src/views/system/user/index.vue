@@ -35,6 +35,18 @@
         prop="status"
         label="状态"/>
     </el-table>
+
+    <div class="pagination-container">
+      <el-pagination
+        :current-page="listQuery.page"
+        :page-sizes="[10,15,20,30]"
+        :page-size="listQuery.limit"
+        :total="total"
+        background
+        layout="total, sizes, prev, pager, next, jumper"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"/>
+    </div>
   </div>
 </template>
 
@@ -46,7 +58,11 @@ export default {
     return {
       list: [],
       listLoading: true,
-      total: 0
+      total: 0,
+      listQuery: {
+        page: 1,
+        limit: 10
+      }
     }
   },
 
@@ -62,12 +78,18 @@ export default {
     getList() {
       this.listLoading = true
       fetchList(this.listQuery).then(response => {
-        this.list = response.data
-        // Just to simulate the time of the request
-        setTimeout(() => {
-          this.listLoading = false
-        }, 1.5 * 1000)
+        this.list = response.data.items
+        this.total = response.data.total
+        this.listLoading = false
       })
+    },
+    handleSizeChange(val) {
+      this.listQuery.limit = val
+      this.getList()
+    },
+    handleCurrentChange(val) {
+      this.listQuery.page = val
+      this.getList()
     }
   }
 }
