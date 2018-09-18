@@ -1,6 +1,9 @@
 export default {
   route: {
     dashboard: '首页',
+    system: '系统管理',
+    user: '用户管理',
+    role: '角色管理',
     introduction: '简述',
     documentation: '文档',
     guide: '引导页',

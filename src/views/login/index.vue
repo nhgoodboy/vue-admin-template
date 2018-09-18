@@ -1,12 +1,17 @@
 <template>
   <div class="login-container">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
-      <h3 class="title">vue-element-admin</h3>
+      <h3 class="title">{{ $t('login.title') }}</h3>
       <el-form-item prop="username">
         <span class="svg-container svg-container_login">
           <svg-icon icon-class="user" />
         </span>
-        <el-input v-model="loginForm.username" name="username" type="text" auto-complete="on" placeholder="username" />
+        <el-input
+          v-model="loginForm.username"
+          :placeholder="$t('login.username')"
+          name="username"
+          type="text"
+          auto-complete="on" />
       </el-form-item>
       <el-form-item prop="password">
         <span class="svg-container">
@@ -15,9 +20,9 @@
         <el-input
           :type="pwdType"
           v-model="loginForm.password"
+          :placeholder="$t('login.password')"
           name="password"
           auto-complete="on"
-          placeholder="password"
           @keyup.enter.native="handleLogin" />
         <span class="show-pwd" @click="showPwd">
           <svg-icon icon-class="eye" />
@@ -25,22 +30,20 @@
       </el-form-item>
       <el-form-item>
         <el-button :loading="loading" type="primary" style="width:100%;" @click.native.prevent="handleLogin">
-          Sign in
+          {{ $t('login.logIn') }}
         </el-button>
       </el-form-item>
-      <div class="tips">
-        <span style="margin-right:20px;">username: admin</span>
-        <span> password: admin</span>
-      </div>
     </el-form>
   </div>
 </template>
 
 <script>
 import { isvalidUsername } from '@/utils/validate'
+import LangSelect from '@/components/LangSelect'
 
 export default {
   name: 'Login',
+  compoments: { LangSelect },
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!isvalidUsername(value)) {

@@ -37,7 +37,7 @@ export const constantRouterMap = [
   {
     path: '/login',
     component: () => import('@/views/login/index'),
-    hidden: true
+    hidden: true // 不在侧边栏线上
   },
 
   {
@@ -49,12 +49,12 @@ export const constantRouterMap = [
   {
     path: '/',
     component: Layout,
-    redirect: '/dashboard',
+    redirect: '/dashboard', // 重定向地址，在面包屑中点击会重定向去的地址
     children: [{
       path: 'dashboard',
-      name: 'Dashboard',
+      name: 'dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard', noCache: true }
+      meta: { title: 'dashboard', icon: 'dashboard', noCache: true }
     }]
   },
 
@@ -98,20 +98,20 @@ export const constantRouterMap = [
     path: '/system',
     component: Layout,
     redirect: '/system/user',
-    name: 'System',
-    meta: { title: 'System', icon: 'example' },
+    name: 'system',
+    meta: { title: 'system', icon: 'example' },
     children: [
       {
         path: 'user',
-        name: 'User',
+        name: 'user',
         component: () => import('@/views/system/user/index'),
-        meta: { title: 'User', icon: 'form' }
+        meta: { title: 'user', icon: 'form' }
       },
       {
         path: 'role',
-        name: 'Role',
+        name: 'role',
         component: () => import('@/views/system/role/index'),
-        meta: { title: 'Role', icon: 'form' }
+        meta: { title: 'role', icon: 'form' }
       }
     ]
   },
