@@ -36,11 +36,9 @@
         </span>
       </el-form-item>
 
-      <!--<el-form-item>-->
       <el-button :loading="loading" type="primary" style="width:100%;" @click.native.prevent="handleLogin">
         {{ $t('login.logIn') }}
       </el-button>
-      <!--</el-form-item>-->
     </el-form>
   </div>
 </template>
@@ -69,8 +67,8 @@ export default {
     }
     return {
       loginForm: {
-        username: 'admin',
-        password: 'ecfadcde9305f8891bcfe5a1e28c253e'
+        username: 'admon',
+        password: '123456'
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],

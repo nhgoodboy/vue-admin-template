@@ -1,6 +1,7 @@
 <template>
   <div class="app-container">
     <el-table
+      v-loading.body="listLoading"
       ref="singleTable"
       :data="list"
       highlight-current-row
@@ -8,38 +9,38 @@
       style="width: 100%"
       @current-change="handleCurrentChange">
       <el-table-column
-        prop="account"
-        label="账号"/>
+        :label="$t('table.account')"
+        prop="account"/>
       <el-table-column
-        prop="name"
-        label="姓名"/>
+        :label="$t('table.name')"
+        prop="name"/>
       <el-table-column
-        prop="sex"
-        label="性别"/>
+        :label="$t('table.sex')"
+        prop="sex"/>
       <el-table-column
-        prop="role"
-        label="角色"/>
+        :label="$t('table.role')"
+        prop="role"/>
       <el-table-column
-        prop="dept"
-        label="部门"/>
+        :label="$t('table.dept')"
+        prop="dept"/>
       <el-table-column
-        prop="emial"
-        label="邮箱"/>
+        :label="$t('table.email')"
+        prop="email"/>
       <el-table-column
-        prop="phone"
-        label="电话"/>
+        :label="$t('table.phone')"
+        prop="phone"/>
       <el-table-column
-        prop="createtime"
-        label="创建时间"/>
+        :label="$t('table.createtime')"
+        prop="createtime"/>
       <el-table-column
-        prop="status"
-        label="状态"/>
+        :label="$t('table.status')"
+        prop="status"/>
     </el-table>
 
     <div class="pagination-container">
       <el-pagination
         :current-page="listQuery.page"
-        :page-sizes="[10,15,20,30]"
+        :page-sizes="[10,20,30,50]"
         :page-size="listQuery.limit"
         :total="total"
         background

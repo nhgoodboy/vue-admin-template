@@ -121,14 +121,23 @@ export default {
     date: 'Date',
     author: 'Author',
     readings: 'Readings',
-    status: 'Status',
     actions: 'Actions',
     edit: 'Edit',
     publish: 'Publish',
     draft: 'Draft',
     delete: 'Delete',
     cancel: 'Cancel',
-    confirm: 'Confirm'
+    confirm: 'Confirm',
+    // musikouyi
+    account: 'Account',
+    name: 'Name',
+    sex: 'Sex',
+    role: 'Role',
+    dept: 'Department',
+    email: 'Email',
+    phone: 'Phone',
+    createtime: 'CreateTime',
+    status: 'Status'
   },
   errorLog: {
     tips: 'Please click the bug icon in the upper right corner',
