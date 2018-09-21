@@ -137,7 +137,10 @@ export default {
     email: 'Email',
     phone: 'Phone',
     createtime: 'CreateTime',
-    status: 'Status'
+    status: 'Status',
+    sex_select_placeHolder: 'Please select sex',
+    male: 'Male',
+    female: 'Female'
   },
   errorLog: {
     tips: 'Please click the bug icon in the upper right corner',

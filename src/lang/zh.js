@@ -137,7 +137,10 @@ export default {
     email: '邮箱',
     phone: '电话',
     createtime: '创建时间',
-    status: '状态'
+    status: '状态',
+    sex_select_placeHolder: '请选择性别',
+    male: '男',
+    female: '女'
   },
   errorLog: {
     tips: '请点击右上角bug小图标',

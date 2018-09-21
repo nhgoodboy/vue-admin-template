@@ -53,22 +53,25 @@
         @current-change="handleCurrentPageChange"/>
     </div>
 
-    <el-dialog :visible.sync="dialogFormVisible" title="收货地址">
-      <!--<el-form :model="form">-->
-      <!--<el-form-item :label-width="formLabelWidth" label="活动名称">-->
-      <!--<el-input v-model="form.name" auto-complete="off"/>-->
-      <!--</el-form-item>-->
-      <!--<el-form-item :label-width="formLabelWidth" label="活动区域">-->
-      <!--<el-select v-model="form.region" placeholder="请选择活动区域">-->
-      <!--<el-option label="区域一" value="shanghai"/>-->
-      <!--<el-option label="区域二" value="beijing"/>-->
-      <!--</el-select>-->
-      <!--</el-form-item>-->
-      <!--</el-form>-->
-      <!--<div slot="footer" class="dialog-footer">-->
-      <!--<el-button @click="dialogFormVisible = false">取 消</el-button>-->
-      <!--<el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>-->
-      <!--</div>-->
+    <el-dialog :visible.sync="dialogFormVisible" :title="formTitle[dialogStatus]">
+      <el-form :model="form">
+        <el-form-item :label-width="formLabelWidth" :label="$t('table.account')">
+          <el-input v-model="form.account" auto-complete="off"/>
+        </el-form-item>
+        <el-form-item :label-width="formLabelWidth" :label="$t('table.name')">
+          <el-input v-model="form.name" auto-complete="off"/>
+        </el-form-item>
+        <el-form-item :label-width="formLabelWidth" :label="$t('table.sex')">
+          <el-select v-model="form.sex" :placeholder="$t('table.sex_select_placeHolder')">
+            <el-option :label="$t('table.male')" value="male"/>
+            <el-option :label="$t('table.female')" value="female"/>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -87,7 +90,26 @@ export default {
         limit: 10
       },
       currentRow: null,
-      dialogFormVisible: false
+      dialogFormVisible: false,
+      form: {
+        account: '',
+        name: '',
+        sex: '',
+        role: '',
+        dept: '',
+        email: '',
+        phone: '',
+        status: '',
+        password: '',
+        confirm_password: '',
+        birthday: ''
+      },
+      formTitle: {
+        create: 'create',
+        modify: 'modify'
+      },
+      dialogStatus: 'create',
+      formLabelWidth: '120px'
     }
   },
 
