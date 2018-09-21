@@ -139,8 +139,15 @@ export default {
     createtime: 'CreateTime',
     status: 'Status',
     sex_select_placeHolder: 'Please select sex',
+    dept_select_placeHolder: 'Please select department',
+    status_select_placeHolder: 'Please select status',
+    role_select_placeHolder: 'Please select role',
+    password: 'Password',
+    confirm_pwd: 'Confirm_Pwd',
     male: 'Male',
-    female: 'Female'
+    female: 'Female',
+    using: 'Using',
+    freeze: 'Freeze'
   },
   errorLog: {
     tips: 'Please click the bug icon in the upper right corner',

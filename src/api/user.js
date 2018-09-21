@@ -17,3 +17,17 @@ export function deleteUser(id) {
     }
   })
 }
+
+export function getRolesList() {
+  return request({
+    url: '/admin/role/roleList',
+    method: 'get'
+  })
+}
+
+export function getDeptsList() {
+  return request({
+    url: '/admin/dept/deptList',
+    method: 'get'
+  })
+}

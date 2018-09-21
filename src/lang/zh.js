@@ -139,8 +139,15 @@ export default {
     createtime: '创建时间',
     status: '状态',
     sex_select_placeHolder: '请选择性别',
+    dept_select_placeHolder: '请选择部门',
+    status_select_placeHolder: '请选择状态',
+    role_select_placeHolder: '请选择角色',
+    password: '密码',
+    confirm_pwd: '确认密码',
     male: '男',
-    female: '女'
+    female: '女',
+    using: '启用',
+    freeze: '冻结'
   },
   errorLog: {
     tips: '请点击右上角bug小图标',

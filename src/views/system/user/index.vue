@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-button type="primary" @click="dialogFormVisible = true">{{ $t('button.create') }}</el-button>
+    <el-button type="primary" @click="create">{{ $t('button.create') }}</el-button>
     <el-button type="success" @click="modifyCurrentRow">{{ $t('button.modify') }}</el-button>
     <el-button type="danger" @click="deleteCurrentRow">{{ $t('button.delete') }}</el-button>
 
@@ -53,16 +53,46 @@
         @current-change="handleCurrentPageChange"/>
     </div>
 
-    <el-dialog :visible.sync="dialogFormVisible" :title="formTitle[dialogStatus]">
-      <el-form :model="form">
+    <el-dialog :visible.sync="dialogFormVisible" :title="formTitle">
+      <el-form :model="form" :inline="true">
         <el-form-item :label-width="formLabelWidth" :label="$t('table.account')">
-          <el-input v-model="form.account" auto-complete="off"/>
+          <el-input v-model="form.account"/>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" :label="$t('table.name')">
           <el-input v-model="form.name" auto-complete="off"/>
         </el-form-item>
-        <el-form-item :label-width="formLabelWidth" :label="$t('table.sex')">
-          <el-select v-model="form.sex" :placeholder="$t('table.sex_select_placeHolder')">
+        <el-form-item :label-width="formLabelWidth" :label="$t('table.email')">
+          <el-input v-model="form.email" type="email"/>
+        </el-form-item>
+        <el-form-item :label-width="formLabelWidth" :label="$t('table.phone')">
+          <el-input v-model="form.phone" type="number" maxlength="11" minlength="11"/>
+        </el-form-item>
+        <el-form-item :label-width="formLabelWidth" :label="$t('table.password')">
+          <el-input v-model="form.password" type="password" minlength="6"/>
+        </el-form-item>
+        <el-form-item :label-width="formLabelWidth" :label="$t('table.confirm_pwd')">
+          <el-input v-model="form.confirm_password" type="password" minlength="6"/>
+        </el-form-item>
+        <el-form-item :label-width="formLabelWidth" :label="$t('table.status')">
+          <el-select v-model="form.status">
+            <el-option :label="$t('table.using')" value="1"/>
+            <el-option :label="$t('table.freeze')" value="2"/>
+          </el-select>
+        </el-form-item>
+        <el-form-item :label="$t('table.sex')" label-width="120px">
+          <el-select v-model="form.sex">
+            <el-option :label="$t('table.male')" value="1"/>
+            <el-option :label="$t('table.female')" value="2"/>
+          </el-select>
+        </el-form-item>
+        <el-form-item :label-width="formLabelWidth" :label="$t('table.dept')">
+          <el-select v-model="form.dept">
+            <el-option :label="$t('table.male')" value="male"/>
+            <el-option :label="$t('table.female')" value="female"/>
+          </el-select>
+        </el-form-item>
+        <el-form-item :label="$t('table.role')" label-width="120px">
+          <el-select v-model="form.dept">
             <el-option :label="$t('table.male')" value="male"/>
             <el-option :label="$t('table.female')" value="female"/>
           </el-select>
@@ -77,7 +107,7 @@
 </template>
 
 <script>
-import { fetchList, deleteUser } from '@/api/user'
+import { fetchList, deleteUser, getRolesList, getDeptsList } from '@/api/user'
 
 export default {
   data() {
@@ -104,12 +134,10 @@ export default {
         confirm_password: '',
         birthday: ''
       },
-      formTitle: {
-        create: 'create',
-        modify: 'modify'
-      },
-      dialogStatus: 'create',
-      formLabelWidth: '120px'
+      formTitle: '',
+      formLabelWidth: '140px',
+      rolesList: [],
+      deptsList: []
     }
   },
 
@@ -173,6 +201,29 @@ export default {
           }
         })
       }
+    },
+    create() {
+      this.form = {
+        account: '',
+        name: '',
+        sex: '',
+        role: '',
+        dept: '',
+        email: '',
+        phone: '',
+        status: '',
+        password: '',
+        confirm_password: '',
+        birthday: ''
+      }
+      this.formTitle = this.$t('button.create')
+      getRolesList().then(response => {
+        this.rolesList = response.data
+      })
+      getDeptsList().then(response => {
+        this.deptsList = response.data
+      })
+      this.dialogFormVisible = true
     }
   }
 }
