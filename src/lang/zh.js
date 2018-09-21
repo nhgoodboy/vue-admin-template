@@ -163,5 +163,11 @@ export default {
     close: '关闭',
     closeOthers: '关闭其它',
     closeAll: '关闭所有'
+  },
+  // musikouyi
+  button: {
+    create: '新增',
+    modify: '修改',
+    delete: '删除'
   }
 }

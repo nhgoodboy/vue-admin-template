@@ -7,3 +7,13 @@ export function fetchList(query) {
     params: query
   })
 }
+
+export function deleteUser(id) {
+  return request({
+    url: '/admin/user/deleteUser',
+    method: 'post',
+    params: {
+      id: id
+    }
+  })
+}

@@ -163,5 +163,11 @@ export default {
     close: 'Close',
     closeOthers: 'Close Others',
     closeAll: 'Close All'
+  },
+  // musikouyi
+  button: {
+    create: 'Create',
+    modify: 'Modify',
+    delete: 'Delete'
   }
 }
