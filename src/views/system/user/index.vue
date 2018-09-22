@@ -75,26 +75,24 @@
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" :label="$t('table.status')">
           <el-select v-model="form.status">
-            <el-option :label="$t('table.using')" value="1"/>
-            <el-option :label="$t('table.freeze')" value="2"/>
+            <el-option :label="$t('table.using')" value="启用"/>
+            <el-option :label="$t('table.freeze')" value="冻结"/>
           </el-select>
         </el-form-item>
         <el-form-item :label="$t('table.sex')" label-width="120px">
           <el-select v-model="form.sex">
-            <el-option :label="$t('table.male')" value="1"/>
-            <el-option :label="$t('table.female')" value="2"/>
+            <el-option :label="$t('table.male')" value="男"/>
+            <el-option :label="$t('table.female')" value="女"/>
           </el-select>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" :label="$t('table.dept')">
           <el-select v-model="form.dept">
-            <el-option :label="$t('table.male')" value="male"/>
-            <el-option :label="$t('table.female')" value="female"/>
+            <el-option v-for="item in deptNameList" :key="item" :label="item" :value="item"/>
           </el-select>
         </el-form-item>
         <el-form-item :label="$t('table.role')" label-width="120px">
-          <el-select v-model="form.dept">
-            <el-option :label="$t('table.male')" value="male"/>
-            <el-option :label="$t('table.female')" value="female"/>
+          <el-select v-model="form.role">
+            <el-option v-for="item in roleNameList" :key="item" :label="item" :value="item"/>
           </el-select>
         </el-form-item>
       </el-form>
@@ -107,7 +105,9 @@
 </template>
 
 <script>
-import { fetchList, deleteUser, getRolesList, getDeptsList } from '@/api/user'
+import { fetchList, deleteUser } from '@/api/user'
+import { getRoleNameList } from '@/api/role'
+import { getDeptNameList } from '@/api/dept'
 
 export default {
   data() {
@@ -136,8 +136,8 @@ export default {
       },
       formTitle: '',
       formLabelWidth: '140px',
-      rolesList: [],
-      deptsList: []
+      roleNameList: [],
+      deptNameList: []
     }
   },
 
@@ -217,11 +217,11 @@ export default {
         birthday: ''
       }
       this.formTitle = this.$t('button.create')
-      getRolesList().then(response => {
-        this.rolesList = response.data
+      getRoleNameList().then(response => {
+        this.roleNameList = response.data
       })
-      getDeptsList().then(response => {
-        this.deptsList = response.data
+      getDeptNameList().then(response => {
+        this.deptNameList = response.data
       })
       this.dialogFormVisible = true
     }

@@ -56,7 +56,9 @@ export default {
     Breadcrumb,
     Hamburger,
     ErrorLog,
+
     Screenfull,
+
     SizeSelect,
     LangSelect,
     ThemePicker
@@ -92,7 +94,7 @@ export default {
       float: left;
       padding: 0 10px;
     }
-    .breadcrumb-container{
+    .breadcrumb-container {
       float: left;
     }
     .errLog-container {
@@ -102,7 +104,7 @@ export default {
     .right-menu {
       float: right;
       height: 100%;
-      &:focus{
+      &:focus {
         outline: none;
       }
       .right-menu-item {
@@ -112,7 +114,7 @@ export default {
       .screenfull {
         height: 20px;
       }
-      .international{
+      .international {
         vertical-align: top;
       }
       .theme-switch {
