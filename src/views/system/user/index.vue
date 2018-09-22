@@ -113,9 +113,7 @@ export default {
   data() {
     const validatePhone = (rule, value, callback) => {
       const reg = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/
-      if (!value) {
-        callback(new Error('请输入电话'))
-      } else if (!reg.test(value)) {
+      if (value.trim() && !reg.test(value)) {
         callback(new Error('请输入正确的电话'))
       } else {
         callback()
@@ -123,9 +121,7 @@ export default {
     }
     const validateEmail = (rule, value, callback) => {
       const reg = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,5}$/
-      if (!value) {
-        callback(new Error('请输入邮箱'))
-      } else if (!reg.test(value)) {
+      if (value.trim() && !reg.test(value)) {
         callback(new Error('请输入正确的邮箱'))
       } else {
         callback()
@@ -144,7 +140,7 @@ export default {
       if (value === '') {
         callback(new Error('请再次输入密码'))
       } else if (value !== this.form.password) {
-        callback(new Error('两次输入密码不一致!'))
+        callback(new Error('两次输入密码不一致'))
       } else {
         callback()
       }
@@ -179,8 +175,8 @@ export default {
       createOrModifyRules: {
         account: [{ required: true, trigger: 'blur', message: '请输入账号' }],
         name: [{ required: true, trigger: 'blur', message: '请输入性名' }],
-        phone: [{ required: true, trigger: 'blur', validator: validatePhone }],
-        email: [{ required: true, trigger: 'blur', validator: validateEmail }],
+        phone: [{ required: false, trigger: 'blur', validator: validatePhone }],
+        email: [{ required: false, trigger: 'blur', validator: validateEmail }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }],
         confirm_pwd: [{ required: true, trigger: 'blur', validator: validateConfirmPwd }],
         status: [{ required: true, trigger: 'change', message: '请选择状态' }],
@@ -238,7 +234,7 @@ export default {
           type: 'warning'
         })
       } else {
-        this.$alert('确定删除该条数据吗，删除后不可恢复哦', '警告', {
+        this.$alert('确定删除该条数据吗', '警告', {
           confirmButtonText: '确定',
           callback: action => {
             deleteUser(this.currentRow.id).then(response => {
@@ -274,6 +270,7 @@ export default {
         this.deptNameList = response.data
       })
       this.dialogFormVisible = true
+      this.$refs['form'].resetFields()
     },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {

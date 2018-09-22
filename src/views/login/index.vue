@@ -107,7 +107,7 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss">
-  $bg:#2d3a4b;
+  $bg:#283443;
   $light_gray:#eee;
   $cursor: #fff;
 
@@ -134,6 +134,7 @@ export default {
         padding: 12px 5px 12px 15px;
         color: $light_gray;
         height: 47px;
+        caret-color: $cursor;
         &:-webkit-autofill {
           -webkit-box-shadow: 0 0 0px 1000px $bg inset !important;
           -webkit-text-fill-color: $cursor !important;
