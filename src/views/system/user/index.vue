@@ -225,6 +225,33 @@ export default {
           message: '请先选择一行，再点击修改按钮',
           type: 'warning'
         })
+      } else {
+        this.formTitle = this.$t('button.modify')
+        console.log(this.roleNameList.length + 'zzzzz')
+        if (!this.roleNameList.length) {
+          getRoleNameList().then(response => {
+            this.roleNameList = response.data
+          })
+        }
+        if (!this.deptNameList.length) {
+          getDeptNameList().then(response => {
+            this.deptNameList = response.data
+          })
+        }
+
+        this.dialogFormVisible = true
+        this.form = {
+          account: this.currentRow.account,
+          name: this.currentRow.name,
+          sex: this.currentRow.sex,
+          role: this.currentRow.role,
+          dept: this.currentRow.dept,
+          email: this.currentRow.email,
+          phone: this.currentRow.phone,
+          status: this.currentRow.status,
+          password: this.currentRow.password,
+          confirm_pwd: this.currentRow.password
+        }
       }
     },
     deleteCurrentRow() {
