@@ -54,43 +54,43 @@
     </div>
 
     <el-dialog :visible.sync="dialogFormVisible" :title="formTitle">
-      <el-form :model="form" :inline="true">
-        <el-form-item :label-width="formLabelWidth" :label="$t('table.account')">
+      <el-form ref="form" :model="form" :inline="true" :rules="createOrModifyRules">
+        <el-form-item :label-width="formLabelWidth" :label="$t('table.account')" prop="account">
           <el-input v-model="form.account"/>
         </el-form-item>
-        <el-form-item :label-width="formLabelWidth" :label="$t('table.name')">
-          <el-input v-model="form.name" auto-complete="off"/>
+        <el-form-item :label-width="formLabelWidth" :label="$t('table.name')" prop="name">
+          <el-input v-model="form.name"/>
         </el-form-item>
-        <el-form-item :label-width="formLabelWidth" :label="$t('table.email')">
-          <el-input v-model="form.email" type="email"/>
+        <el-form-item :label-width="formLabelWidth" :label="$t('table.phone')" prop="phone">
+          <el-input v-model="form.phone"/>
         </el-form-item>
-        <el-form-item :label-width="formLabelWidth" :label="$t('table.phone')">
-          <el-input v-model="form.phone" type="number" maxlength="11" minlength="11"/>
+        <el-form-item :label-width="formLabelWidth" :label="$t('table.email')" prop="email">
+          <el-input v-model="form.email"/>
         </el-form-item>
-        <el-form-item :label-width="formLabelWidth" :label="$t('table.password')">
-          <el-input v-model="form.password" type="password" minlength="6"/>
+        <el-form-item :label-width="formLabelWidth" :label="$t('table.password')" prop="password">
+          <el-input v-model="form.password" type="password"/>
         </el-form-item>
-        <el-form-item :label-width="formLabelWidth" :label="$t('table.confirm_pwd')">
-          <el-input v-model="form.confirm_password" type="password" minlength="6"/>
+        <el-form-item :label-width="formLabelWidth" :label="$t('table.confirm_pwd')" prop="confirm_pwd">
+          <el-input v-model="form.confirm_pwd" type="password"/>
         </el-form-item>
-        <el-form-item :label-width="formLabelWidth" :label="$t('table.status')">
+        <el-form-item :label-width="formLabelWidth" :label="$t('table.status')" prop="status">
           <el-select v-model="form.status">
             <el-option :label="$t('table.using')" value="启用"/>
             <el-option :label="$t('table.freeze')" value="冻结"/>
           </el-select>
         </el-form-item>
-        <el-form-item :label="$t('table.sex')" label-width="120px">
+        <el-form-item :label="$t('table.sex')" label-width="105px" prop="sex">
           <el-select v-model="form.sex">
             <el-option :label="$t('table.male')" value="男"/>
             <el-option :label="$t('table.female')" value="女"/>
           </el-select>
         </el-form-item>
-        <el-form-item :label-width="formLabelWidth" :label="$t('table.dept')">
+        <el-form-item :label-width="formLabelWidth" :label="$t('table.dept')" prop="dept">
           <el-select v-model="form.dept">
             <el-option v-for="item in deptNameList" :key="item" :label="item" :value="item"/>
           </el-select>
         </el-form-item>
-        <el-form-item :label="$t('table.role')" label-width="120px">
+        <el-form-item :label="$t('table.role')" label-width="105px" prop="role">
           <el-select v-model="form.role">
             <el-option v-for="item in roleNameList" :key="item" :label="item" :value="item"/>
           </el-select>
@@ -98,19 +98,57 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+        <el-button type="primary" @click="submitForm('form')">确 定</el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { fetchList, deleteUser } from '@/api/user'
+import { fetchList, deleteUser, createUser } from '@/api/user'
 import { getRoleNameList } from '@/api/role'
 import { getDeptNameList } from '@/api/dept'
 
 export default {
   data() {
+    const validatePhone = (rule, value, callback) => {
+      const reg = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/
+      if (!value) {
+        callback(new Error('请输入电话'))
+      } else if (!reg.test(value)) {
+        callback(new Error('请输入正确的电话'))
+      } else {
+        callback()
+      }
+    }
+    const validateEmail = (rule, value, callback) => {
+      const reg = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,5}$/
+      if (!value) {
+        callback(new Error('请输入邮箱'))
+      } else if (!reg.test(value)) {
+        callback(new Error('请输入正确的邮箱'))
+      } else {
+        callback()
+      }
+    }
+    const validatePassword = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入密码'))
+      } else if (value.length < 6) {
+        callback(new Error('密码不能小于6位'))
+      } else {
+        callback()
+      }
+    }
+    const validateConfirmPwd = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请再次输入密码'))
+      } else if (value !== this.form.password) {
+        callback(new Error('两次输入密码不一致!'))
+      } else {
+        callback()
+      }
+    }
     return {
       list: [],
       listLoading: true,
@@ -128,16 +166,28 @@ export default {
         role: '',
         dept: '',
         email: '',
-        phone: '',
+        phone: 0,
         status: '',
         password: '',
-        confirm_password: '',
+        confirm_pwd: '',
         birthday: ''
       },
       formTitle: '',
-      formLabelWidth: '140px',
+      formLabelWidth: '120px',
       roleNameList: [],
-      deptNameList: []
+      deptNameList: [],
+      createOrModifyRules: {
+        account: [{ required: true, trigger: 'blur', message: '请输入账号' }],
+        name: [{ required: true, trigger: 'blur', message: '请输入性名' }],
+        phone: [{ required: true, trigger: 'blur', validator: validatePhone }],
+        email: [{ required: true, trigger: 'blur', validator: validateEmail }],
+        password: [{ required: true, trigger: 'blur', validator: validatePassword }],
+        confirm_pwd: [{ required: true, trigger: 'blur', validator: validateConfirmPwd }],
+        status: [{ required: true, trigger: 'change', message: '请选择状态' }],
+        sex: [{ required: true, trigger: 'change', message: '请选择性别' }],
+        dept: [{ required: true, trigger: 'change', message: '请选择部门' }],
+        role: [{ required: true, trigger: 'change', message: '请选择角色' }]
+      }
     }
   },
 
@@ -224,6 +274,18 @@ export default {
         this.deptNameList = response.data
       })
       this.dialogFormVisible = true
+    },
+    submitForm(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          createUser(this.form).then(response => {
+            this.getList()
+            this.dialogFormVisible = false
+          })
+        } else {
+          return false
+        }
+      })
     }
   }
 }

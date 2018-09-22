@@ -17,3 +17,11 @@ export function deleteUser(id) {
     }
   })
 }
+
+export function createUser(form) {
+  return request({
+    url: '/admin/user/createUser',
+    method: 'post',
+    data: form
+  })
+}
