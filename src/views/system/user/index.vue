@@ -3,6 +3,7 @@
     <el-button type="primary" @click="create">{{ $t('button.create') }}</el-button>
     <el-button type="success" @click="modifyCurrentRow">{{ $t('button.modify') }}</el-button>
     <el-button type="danger" @click="deleteCurrentRow">{{ $t('button.delete') }}</el-button>
+    <el-button type="warning" @click="changePassword">{{ $t('button.changePassword') }}</el-button>
 
     <el-table
       v-loading.body="listLoading"
@@ -56,7 +57,7 @@
     <el-dialog :visible.sync="dialogFormVisible" :title="formTitle">
       <el-form ref="form" :model="form" :inline="true" :rules="createOrModifyRules">
         <el-form-item :label-width="formLabelWidth" :label="$t('table.account')" prop="account">
-          <el-input v-model="form.account"/>
+          <el-input v-model="form.account" :disabled="!isCreate"/>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" :label="$t('table.name')" prop="name">
           <el-input v-model="form.name"/>
@@ -67,22 +68,22 @@
         <el-form-item :label-width="formLabelWidth" :label="$t('table.email')" prop="email">
           <el-input v-model="form.email"/>
         </el-form-item>
-        <el-form-item :label-width="formLabelWidth" :label="$t('table.password')" prop="password">
+        <el-form-item v-if="isCreate" :label-width="formLabelWidth" :label="$t('table.password')" prop="password">
           <el-input v-model="form.password" type="password"/>
         </el-form-item>
-        <el-form-item :label-width="formLabelWidth" :label="$t('table.confirm_pwd')" prop="confirm_pwd">
+        <el-form-item v-if="isCreate" :label-width="formLabelWidth" :label="$t('table.confirm_pwd')" prop="confirm_pwd">
           <el-input v-model="form.confirm_pwd" type="password"/>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" :label="$t('table.status')" prop="status">
           <el-select v-model="form.status">
-            <el-option :label="$t('table.using')" value="启用"/>
-            <el-option :label="$t('table.freeze')" value="冻结"/>
+            <el-option label="启用" value="启用"/>
+            <el-option label="冻结" value="冻结"/>
           </el-select>
         </el-form-item>
         <el-form-item :label="$t('table.sex')" label-width="105px" prop="sex">
           <el-select v-model="form.sex">
-            <el-option :label="$t('table.male')" value="男"/>
-            <el-option :label="$t('table.female')" value="女"/>
+            <el-option label="男" value="男"/>
+            <el-option label="女" value="女"/>
           </el-select>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" :label="$t('table.dept')" prop="dept">
@@ -95,17 +96,35 @@
             <el-option v-for="item in roleNameList" :key="item" :label="item" :value="item"/>
           </el-select>
         </el-form-item>
+        <el-form-item v-if="!isCreate" :label-width="formLabelWidth" :label="$t('table.createtime')">
+          <el-input v-model="form.createtime" :disabled="true"/>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="submitForm('form')">确 定</el-button>
+        <el-button @click="dialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
+        <el-button type="primary" @click="submitForm('form')">{{ $t('table.confirm') }}</el-button>
+      </div>
+    </el-dialog>
+
+    <el-dialog :visible.sync="dialogPwdFormVisible" :title="$t('button.changePassword')" width="30%">
+      <el-form ref="changePwdForm" :model="changePwdForm" :rules="changePwdRule">
+        <el-form-item :label-width="formLabelWidth" :label="$t('table.new_password')" prop="newPassword">
+          <el-input v-model="changePwdForm.newPassword" type="password"/>
+        </el-form-item>
+        <el-form-item :label-width="formLabelWidth" :label="$t('table.confirm_pwd')" prop="confirmPwd">
+          <el-input v-model="changePwdForm.confirmPwd" type="password"/>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
+        <el-button type="primary" @click="submitChangePwdForm('changePwdForm')">{{ $t('table.confirm') }}</el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { fetchList, deleteUser, createUser } from '@/api/user'
+import { fetchList, deleteUser, createUser, modifyUser, changePwd } from '@/api/user'
 import { getRoleNameList } from '@/api/role'
 import { getDeptNameList } from '@/api/dept'
 
@@ -139,7 +158,9 @@ export default {
     const validateConfirmPwd = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('请再次输入密码'))
-      } else if (value !== this.form.password) {
+      } else if (this.dialogFormVisible && value !== this.form.password) {
+        callback(new Error('两次输入密码不一致'))
+      } else if (value !== this.changePwdForm.newPassword) {
         callback(new Error('两次输入密码不一致'))
       } else {
         callback()
@@ -156,6 +177,7 @@ export default {
       currentRow: null,
       dialogFormVisible: false,
       form: {
+        id: 0,
         account: '',
         name: '',
         sex: '',
@@ -164,11 +186,10 @@ export default {
         email: '',
         phone: 0,
         status: '',
-        password: '',
-        confirm_pwd: '',
-        birthday: ''
+        createtime: ''
       },
       formTitle: '',
+      isCreate: true,
       formLabelWidth: '120px',
       roleNameList: [],
       deptNameList: [],
@@ -183,6 +204,16 @@ export default {
         sex: [{ required: true, trigger: 'change', message: '请选择性别' }],
         dept: [{ required: true, trigger: 'change', message: '请选择部门' }],
         role: [{ required: true, trigger: 'change', message: '请选择角色' }]
+      },
+      changePwdForm: {
+        id: 0,
+        newPassword: '',
+        confirmPwd: ''
+      },
+      dialogPwdFormVisible: false,
+      changePwdRule: {
+        newPassword: [{ required: true, trigger: 'blur', validator: validatePassword }],
+        confirmPwd: [{ required: true, trigger: 'blur', validator: validateConfirmPwd }]
       }
     }
   },
@@ -196,7 +227,6 @@ export default {
   },
 
   mounted() {
-
   },
 
   methods: {
@@ -227,6 +257,7 @@ export default {
         })
       } else {
         this.formTitle = this.$t('button.modify')
+        this.isCreate = false
         console.log(this.roleNameList.length + 'zzzzz')
         if (!this.roleNameList.length) {
           getRoleNameList().then(response => {
@@ -241,6 +272,7 @@ export default {
 
         this.dialogFormVisible = true
         this.form = {
+          id: this.currentRow.id,
           account: this.currentRow.account,
           name: this.currentRow.name,
           sex: this.currentRow.sex,
@@ -249,8 +281,7 @@ export default {
           email: this.currentRow.email,
           phone: this.currentRow.phone,
           status: this.currentRow.status,
-          password: this.currentRow.password,
-          confirm_pwd: this.currentRow.password
+          createtime: this.currentRow.createtime
         }
       }
     },
@@ -286,10 +317,10 @@ export default {
         phone: '',
         status: '',
         password: '',
-        confirm_password: '',
-        birthday: ''
+        confirm_password: ''
       }
       this.formTitle = this.$t('button.create')
+      this.isCreate = true
       getRoleNameList().then(response => {
         this.roleNameList = response.data
       })
@@ -300,11 +331,50 @@ export default {
       this.$refs['form'].resetFields()
     },
     submitForm(formName) {
+      if (this.isCreate) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            createUser(this.form).then(response => {
+              this.getList()
+              this.dialogFormVisible = false
+            })
+          } else {
+            return false
+          }
+        })
+      } else {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            modifyUser(this.form).then(response => {
+              this.getList()
+              this.dialogFormVisible = false
+            })
+          } else {
+            return false
+          }
+        })
+      }
+    },
+    changePassword() {
+      if (!this.currentRow) {
+        this.$message({
+          message: '请先选择一行，再点击更改密码按钮',
+          type: 'warning'
+        })
+      } else {
+        this.changePwdForm = {
+          id: this.currentRow.id,
+          newPassword: '',
+          confirmPwd: ''
+        }
+        this.dialogPwdFormVisible = true
+      }
+    },
+    submitChangePwdForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          createUser(this.form).then(response => {
-            this.getList()
-            this.dialogFormVisible = false
+          changePwd(this.changePwdForm).then(response => {
+            this.dialogPwdFormVisible = false
           })
         } else {
           return false

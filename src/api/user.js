@@ -25,3 +25,23 @@ export function createUser(form) {
     data: form
   })
 }
+
+export function modifyUser(form) {
+  return request({
+    url: '/admin/user/modifyUser',
+    method: 'post',
+    data: form
+  })
+}
+
+export function changePwd(form) {
+  return request({
+    url: '/admin/user/changePwd',
+    method: 'post',
+    params: {
+      id: form.id,
+      newPassword: form.newPassword
+    }
+  })
+}
+

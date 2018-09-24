@@ -143,7 +143,8 @@ export default {
     status_select_placeHolder: 'Please select status',
     role_select_placeHolder: 'Please select role',
     password: 'Password',
-    confirm_pwd: 'Confirm_Pwd',
+    new_password: 'NewPassword',
+    confirm_pwd: 'ConfirmPwd',
     male: 'Male',
     female: 'Female',
     using: 'Using',
@@ -178,6 +179,7 @@ export default {
   button: {
     create: 'Create',
     modify: 'Modify',
-    delete: 'Delete'
+    delete: 'Delete',
+    changePassword: 'ChangePassword'
   }
 }

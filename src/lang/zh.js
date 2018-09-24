@@ -143,6 +143,7 @@ export default {
     status_select_placeHolder: '请选择状态',
     role_select_placeHolder: '请选择角色',
     password: '密码',
+    new_password: '新密码',
     confirm_pwd: '确认密码',
     male: '男',
     female: '女',
@@ -178,6 +179,7 @@ export default {
   button: {
     create: '新增',
     modify: '修改',
-    delete: '删除'
+    delete: '删除',
+    changePassword: '更改密码'
   }
 }
