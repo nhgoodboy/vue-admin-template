@@ -258,7 +258,6 @@ export default {
       } else {
         this.formTitle = this.$t('button.modify')
         this.isCreate = false
-        console.log(this.roleNameList.length + 'zzzzz')
         if (!this.roleNameList.length) {
           getRoleNameList().then(response => {
             this.roleNameList = response.data
@@ -269,8 +268,8 @@ export default {
             this.deptNameList = response.data
           })
         }
-
         this.dialogFormVisible = true
+        this.$refs['form'].resetFields()
         this.form = {
           id: this.currentRow.id,
           account: this.currentRow.account,
@@ -292,17 +291,23 @@ export default {
           type: 'warning'
         })
       } else {
-        this.$alert('确定删除该条数据吗', '警告', {
+        this.$confirm('确定删除该条数据吗', '提示', {
           confirmButtonText: '确定',
-          callback: action => {
-            deleteUser(this.currentRow.id).then(response => {
-              this.$message({
-                type: 'success',
-                message: '已删除该条数据'
-              })
-              this.getList()
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          deleteUser(this.currentRow.id).then(response => {
+            this.$message({
+              type: 'success',
+              message: '删除成功'
             })
-          }
+            this.getList()
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
         })
       }
     },
