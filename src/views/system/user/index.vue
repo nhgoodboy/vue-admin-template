@@ -116,7 +116,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
+        <el-button @click="dialogPwdFormVisible = false">{{ $t('table.cancel') }}</el-button>
         <el-button type="primary" @click="submitChangePwdForm('changePwdForm')">{{ $t('table.confirm') }}</el-button>
       </div>
     </el-dialog>
@@ -269,7 +269,7 @@ export default {
           })
         }
         this.dialogFormVisible = true
-        this.$refs['form'].resetFields()
+        this.$refs['form'].clearValidate()
         this.form = {
           id: this.currentRow.id,
           account: this.currentRow.account,
@@ -333,7 +333,7 @@ export default {
         this.deptNameList = response.data
       })
       this.dialogFormVisible = true
-      this.$refs['form'].resetFields()
+      this.$refs['form'].clearValidate()
     },
     submitForm(formName) {
       if (this.isCreate) {
@@ -342,6 +342,10 @@ export default {
             createUser(this.form).then(response => {
               this.getList()
               this.dialogFormVisible = false
+              this.$message({
+                type: 'success',
+                message: '创建成功'
+              })
             })
           } else {
             return false
@@ -353,6 +357,10 @@ export default {
             modifyUser(this.form).then(response => {
               this.getList()
               this.dialogFormVisible = false
+              this.$message({
+                type: 'success',
+                message: '修改成功'
+              })
             })
           } else {
             return false
@@ -373,6 +381,7 @@ export default {
           confirmPwd: ''
         }
         this.dialogPwdFormVisible = true
+        this.$refs['changePwdForm'].clearValidate()
       }
     },
     submitChangePwdForm(formName) {
@@ -380,6 +389,10 @@ export default {
         if (valid) {
           changePwd(this.changePwdForm).then(response => {
             this.dialogPwdFormVisible = false
+            this.$message({
+              type: 'success',
+              message: '密码更改成功'
+            })
           })
         } else {
           return false
