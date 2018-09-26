@@ -130,8 +130,12 @@
 import { fetchList, deleteUser, createUser, modifyUser, changePwd } from '@/api/user'
 import { getRoleNameList } from '@/api/role'
 import { getDeptNameList } from '@/api/dept'
+import waves from '@/directive/waves' // 水波纹指令
 
 export default {
+  directives: {
+    waves
+  },
   data() {
     const validatePhone = (rule, value, callback) => {
       const reg = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/
@@ -273,7 +277,9 @@ export default {
           })
         }
         this.dialogFormVisible = true
-        this.$refs['form'].clearValidate()
+        this.$nextTick(() => { // 清空验证
+          this.$refs['form'].clearValidate()
+        })
         this.form = {
           id: this.currentRow.id,
           account: this.currentRow.account,
@@ -337,7 +343,9 @@ export default {
         this.deptNameList = response.data
       })
       this.dialogFormVisible = true
-      this.$refs['form'].clearValidate()
+      this.$nextTick(() => { // 清空验证
+        this.$refs['form'].clearValidate()
+      })
     },
     submitForm(formName) {
       if (this.isCreate) {
@@ -402,6 +410,9 @@ export default {
           return false
         }
       })
+    },
+    handleFilter() {
+
     }
   }
 }

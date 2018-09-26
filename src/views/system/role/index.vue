@@ -88,7 +88,36 @@ export default {
       modifyRole
     },
     deleteCurrentRow() {
-      deleteRole
+      if (!this.currentRow) {
+        this.$message({
+          message: '请先选择一行，再点击删除按钮',
+          type: 'warning'
+        })
+      } else if (this.currentRow.id === 1) {
+        this.$message({
+          type: 'warning',
+          message: '不允许删除超级管理员'
+        })
+      } else {
+        this.$confirm('确定删除该条数据吗', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          deleteRole(this.currentRow.id).then(response => {
+            this.$message({
+              type: 'success',
+              message: '删除成功'
+            })
+            this.getList()
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
+      }
     }
   }
 }

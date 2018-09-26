@@ -14,3 +14,29 @@ export function fetchList(query) {
     params: query
   })
 }
+
+export function deleteRole(id) {
+  return request({
+    url: '/admin/role/delete',
+    method: 'post',
+    params: {
+      id: id
+    }
+  })
+}
+
+export function createRole(form) {
+  return request({
+    url: '/admin/role/create',
+    method: 'post',
+    data: form
+  })
+}
+
+export function modifyRole(form) {
+  return request({
+    url: '/admin/role/modify',
+    method: 'post',
+    data: form
+  })
+}
