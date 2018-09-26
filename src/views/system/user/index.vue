@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-button type="primary" @click="create">{{ $t('button.create') }}</el-button>
+    <el-button type="primary" @click="handleCreate">{{ $t('button.create') }}</el-button>
     <el-button type="success" @click="modifyCurrentRow">{{ $t('button.modify') }}</el-button>
     <el-button type="danger" @click="deleteCurrentRow">{{ $t('button.delete') }}</el-button>
     <el-button type="warning" @click="changePassword">{{ $t('button.changePassword') }}</el-button>
@@ -318,7 +318,7 @@ export default {
         })
       }
     },
-    create() {
+    handleCreate() {
       this.form = {
         account: '',
         name: '',

@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-button type="primary" @click="create">{{ $t('button.create') }}</el-button>
+    <el-button type="primary" @click="handleCreate">{{ $t('button.create') }}</el-button>
     <el-button type="success" @click="modifyCurrentRow">{{ $t('button.modify') }}</el-button>
     <el-button type="danger" @click="deleteCurrentRow">{{ $t('button.delete') }}</el-button>
 
@@ -34,13 +34,35 @@
         @size-change="handlePageSizeChange"
         @current-change="handleCurrentPageChange"/>
     </div>
+
+    <el-dialog :visible.sync="dialogFormVisible" :title="formTitle" width="30%">
+      <el-form ref="form" :model="form" :rules="createOrModifyRules">
+        <el-form-item :label-width="formLabelWidth" :label="$t('table.name1')" prop="name">
+          <el-input v-model="form.name" style="width: 200px"/>
+        </el-form-item>
+        <el-form-item :label-width="formLabelWidth" :label="$t('table.parent_role')" prop="parent_role">
+          <el-select v-model="form.parent_role">
+            <el-option v-for="item in roleNameList" :key="item" :label="item" :value="item"/>
+          </el-select>
+        </el-form-item>
+        <el-form-item :label-width="formLabelWidth" :label="$t('table.dept')" prop="dept">
+          <el-select v-model="form.dept">
+            <el-option v-for="item in deptNameList" :key="item" :label="item" :value="item"/>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
+        <el-button type="primary" @click="submitForm('form')">{{ $t('table.confirm') }}</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import { fetchList, deleteRole, createRole, modifyRole } from '@/api/role'
-// import { getRoleNameList } from '@/api/role'
-// import { getDeptNameList } from '@/api/dept'
+import { getRoleNameList } from '@/api/role'
+import { getDeptNameList } from '@/api/dept'
 
 export default {
   data() {
@@ -53,7 +75,23 @@ export default {
         limit: 10
       },
       currentRow: null,
-      dialogFormVisible: false
+      formTitle: '',
+      formLabelWidth: '120px',
+      isCreate: true,
+      dialogFormVisible: false,
+      roleNameList: [],
+      deptNameList: [],
+      form: {
+        id: undefined,
+        name: '',
+        parent_role: '',
+        dept: ''
+      },
+      createOrModifyRules: {
+        name: [{ required: true, trigger: 'blur', message: '请输入角色名称' }],
+        parent_role: [{ required: true, trigger: 'change', message: '请选择父角色' }],
+        dept: [{ required: true, trigger: 'change', message: '请选择部门' }]
+      }
     }
   },
 
@@ -81,11 +119,48 @@ export default {
     handleCurrentRowChange(row) {
       this.currentRow = row
     },
-    create() {
-      createRole
+    getDeptAndRoleNameList() {
+      if (!this.roleNameList.length) {
+        getRoleNameList().then(response => {
+          this.roleNameList = response.data
+        })
+      }
+      if (!this.deptNameList.length) {
+        getDeptNameList().then(response => {
+          this.deptNameList = response.data
+        })
+      }
+    },
+    handleCreate() {
+      this.form = {
+        name: '',
+        parent_role: '',
+        dept: ''
+      }
+      this.formTitle = this.$t('button.create')
+      this.isCreate = true
+      this.getDeptAndRoleNameList()
+      this.dialogFormVisible = true
+      this.$nextTick(() => { // 清空验证
+        this.$refs['form'].clearValidate()
+      })
     },
     modifyCurrentRow() {
-      modifyRole
+      if (!this.currentRow) {
+        this.$message({
+          message: '请先选择一行，再点击修改按钮',
+          type: 'warning'
+        })
+      } else {
+        this.formTitle = this.$t('button.modify')
+        this.isCreate = false
+        this.getDeptAndRoleNameList()
+        this.dialogFormVisible = true
+        this.$nextTick(() => { // 清空验证
+          this.$refs['form'].clearValidate()
+        })
+        this.form = Object.assign({}, this.currentRow)
+      }
     },
     deleteCurrentRow() {
       if (!this.currentRow) {
@@ -116,6 +191,39 @@ export default {
             type: 'info',
             message: '已取消删除'
           })
+        })
+      }
+    },
+    submitForm(formName) {
+      if (this.isCreate) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            createRole(this.form).then(response => {
+              this.getList()
+              this.dialogFormVisible = false
+              this.$message({
+                type: 'success',
+                message: '创建成功'
+              })
+            })
+          } else {
+            return false
+          }
+        })
+      } else {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            modifyRole(this.form).then(response => {
+              this.getList()
+              this.dialogFormVisible = false
+              this.$message({
+                type: 'success',
+                message: '修改成功'
+              })
+            })
+          } else {
+            return false
+          }
         })
       }
     }
