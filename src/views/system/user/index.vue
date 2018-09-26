@@ -138,7 +138,7 @@ export default {
   },
   data() {
     const validatePhone = (rule, value, callback) => {
-      const reg = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/
+      const reg = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/ // 手机reg
       if (value.trim() && !reg.test(value)) {
         callback(new Error('请输入正确的电话'))
       } else {
@@ -146,7 +146,7 @@ export default {
       }
     }
     const validateEmail = (rule, value, callback) => {
-      const reg = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,5}$/
+      const reg = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,5}$/ // 邮箱reg
       if (value.trim() && !reg.test(value)) {
         callback(new Error('请输入正确的邮箱'))
       } else {
@@ -165,9 +165,9 @@ export default {
     const validateConfirmPwd = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('请再次输入密码'))
-      } else if (this.dialogFormVisible && value !== this.form.password) {
+      } else if (this.isCreate && value !== this.form.password) {
         callback(new Error('两次输入密码不一致'))
-      } else if (value !== this.changePwdForm.newPassword) {
+      } else if (!this.isCreate && value !== this.changePwdForm.newPassword) {
         callback(new Error('两次输入密码不一致'))
       } else {
         callback()
@@ -185,14 +185,14 @@ export default {
       currentRow: null,
       dialogFormVisible: false,
       form: {
-        id: 0,
+        id: undefined,
         account: '',
         name: '',
         sex: '',
         role: '',
         dept: '',
         email: '',
-        phone: 0,
+        phone: undefined,
         status: '',
         createtime: ''
       },
@@ -214,7 +214,7 @@ export default {
         role: [{ required: true, trigger: 'change', message: '请选择角色' }]
       },
       changePwdForm: {
-        id: 0,
+        id: undefined,
         newPassword: '',
         confirmPwd: ''
       },
@@ -257,6 +257,18 @@ export default {
     handleCurrentRowChange(row) {
       this.currentRow = row
     },
+    getDeptAndRoleNameList() {
+      if (!this.roleNameList.length) {
+        getRoleNameList().then(response => {
+          this.roleNameList = response.data
+        })
+      }
+      if (!this.deptNameList.length) {
+        getDeptNameList().then(response => {
+          this.deptNameList = response.data
+        })
+      }
+    },
     modifyCurrentRow() {
       if (!this.currentRow) {
         this.$message({
@@ -266,32 +278,12 @@ export default {
       } else {
         this.formTitle = this.$t('button.modify')
         this.isCreate = false
-        if (!this.roleNameList.length) {
-          getRoleNameList().then(response => {
-            this.roleNameList = response.data
-          })
-        }
-        if (!this.deptNameList.length) {
-          getDeptNameList().then(response => {
-            this.deptNameList = response.data
-          })
-        }
+        this.getDeptAndRoleNameList()
         this.dialogFormVisible = true
         this.$nextTick(() => { // 清空验证
           this.$refs['form'].clearValidate()
         })
-        this.form = {
-          id: this.currentRow.id,
-          account: this.currentRow.account,
-          name: this.currentRow.name,
-          sex: this.currentRow.sex,
-          role: this.currentRow.role,
-          dept: this.currentRow.dept,
-          email: this.currentRow.email,
-          phone: this.currentRow.phone,
-          status: this.currentRow.status,
-          createtime: this.currentRow.createtime
-        }
+        this.form = Object.assign({}, this.currentRow)
       }
     },
     deleteCurrentRow() {
@@ -336,12 +328,7 @@ export default {
       }
       this.formTitle = this.$t('button.create')
       this.isCreate = true
-      getRoleNameList().then(response => {
-        this.roleNameList = response.data
-      })
-      getDeptNameList().then(response => {
-        this.deptNameList = response.data
-      })
+      this.getDeptAndRoleNameList()
       this.dialogFormVisible = true
       this.$nextTick(() => { // 清空验证
         this.$refs['form'].clearValidate()
