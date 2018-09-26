@@ -138,7 +138,7 @@ export default {
   },
   data() {
     const validatePhone = (rule, value, callback) => {
-      const reg = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/ // 手机reg
+      const reg = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/
       if (value.trim() && !reg.test(value)) {
         callback(new Error('请输入正确的电话'))
       } else {
@@ -146,7 +146,7 @@ export default {
       }
     }
     const validateEmail = (rule, value, callback) => {
-      const reg = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,5}$/ // 邮箱reg
+      const reg = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,5}$/
       if (value.trim() && !reg.test(value)) {
         callback(new Error('请输入正确的邮箱'))
       } else {
@@ -291,6 +291,11 @@ export default {
         this.$message({
           message: '请先选择一行，再点击删除按钮',
           type: 'warning'
+        })
+      } else if (this.currentRow.id === 1) {
+        this.$message({
+          type: 'warning',
+          message: '不允许删除超级管理员'
         })
       } else {
         this.$confirm('确定删除该条数据吗', '提示', {
