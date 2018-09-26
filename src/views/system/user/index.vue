@@ -5,6 +5,9 @@
     <el-button type="danger" @click="deleteCurrentRow">{{ $t('button.delete') }}</el-button>
     <el-button type="warning" @click="changePassword">{{ $t('button.changePassword') }}</el-button>
 
+    <el-input :placeholder="$t('table.account')" v-model="queryContent" style="width: 200px;" @keyup.enter.native="handleFilter"/>
+    <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('table.search') }}</el-button>
+
     <el-table
       v-loading.body="listLoading"
       ref="singleTable"
@@ -167,6 +170,7 @@ export default {
       }
     }
     return {
+      queryContent: '',
       list: [],
       listLoading: true,
       total: 0,

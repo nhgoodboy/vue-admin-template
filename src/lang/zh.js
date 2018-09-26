@@ -131,6 +131,7 @@ export default {
     // musikouyi
     account: '账号',
     name: '姓名',
+    name1: '名称',
     sex: '性别',
     role: '角色',
     dept: '部门',
@@ -138,6 +139,7 @@ export default {
     phone: '电话',
     createtime: '创建时间',
     status: '状态',
+    parent_role: '上级角色',
     sex_select_placeHolder: '请选择性别',
     dept_select_placeHolder: '请选择部门',
     status_select_placeHolder: '请选择状态',

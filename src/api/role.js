@@ -6,3 +6,11 @@ export function getRoleNameList() {
     method: 'get'
   })
 }
+
+export function fetchList(query) {
+  return request({
+    url: '/admin/role/list',
+    method: 'get',
+    params: query
+  })
+}

@@ -131,6 +131,7 @@ export default {
     // musikouyi
     account: 'Account',
     name: 'Name',
+    name1: 'Name',
     sex: 'Sex',
     role: 'Role',
     dept: 'Department',
@@ -138,6 +139,7 @@ export default {
     phone: 'Phone',
     createtime: 'CreateTime',
     status: 'Status',
+    parent_role: 'Parent Role',
     sex_select_placeHolder: 'Please select sex',
     dept_select_placeHolder: 'Please select department',
     status_select_placeHolder: 'Please select status',
@@ -180,6 +182,6 @@ export default {
     create: 'Create',
     modify: 'Modify',
     delete: 'Delete',
-    changePassword: 'ChangePassword'
+    changePassword: 'Change Password'
   }
 }
