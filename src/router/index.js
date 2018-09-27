@@ -112,6 +112,12 @@ export const constantRouterMap = [
         name: 'role',
         component: () => import('@/views/system/role/index'),
         meta: { title: 'role', icon: 'form' }
+      },
+      {
+        path: 'dept',
+        name: 'dept',
+        component: () => import('@/views/system/dept/index'),
+        meta: { title: 'dept', icon: 'form' }
       }
     ]
   },
