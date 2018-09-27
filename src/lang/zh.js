@@ -5,6 +5,7 @@ export default {
     user: '用户管理',
     role: '角色管理',
     dept: '部门管理',
+    profile: '个人主页',
     introduction: '简述',
     documentation: '文档',
     guide: '引导页',
@@ -70,6 +71,7 @@ export default {
   navbar: {
     logOut: '退出登录',
     dashboard: '首页',
+    profile: '个人主页',
     github: '项目地址',
     screenfull: '全屏',
     theme: '换肤',
@@ -185,5 +187,8 @@ export default {
     modify: '修改',
     delete: '删除',
     changePassword: '更改密码'
+  },
+  tooltip: {
+    backToTop: '返回顶部'
   }
 }

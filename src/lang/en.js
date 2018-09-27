@@ -4,7 +4,8 @@ export default {
     system: 'System',
     user: 'User',
     role: 'Role',
-    dept: 'Dept',
+    dept: 'Department',
+    profile: 'Profile',
     introduction: 'Introduction',
     documentation: 'Documentation',
     guide: 'Guide',
@@ -70,6 +71,7 @@ export default {
   navbar: {
     logOut: 'Log Out',
     dashboard: 'Dashboard',
+    profile: 'Profile',
     github: 'Github',
     screenfull: 'Screenfull',
     theme: 'Theme',
@@ -185,5 +187,8 @@ export default {
     modify: 'Modify',
     delete: 'Delete',
     changePassword: 'Change Password'
+  },
+  tooltip: {
+    backToTop: 'BackToTop'
   }
 }

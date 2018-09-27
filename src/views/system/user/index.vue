@@ -123,6 +123,10 @@
         <el-button type="primary" @click="submitChangePwdForm('changePwdForm')">{{ $t('table.confirm') }}</el-button>
       </div>
     </el-dialog>
+
+    <el-tooltip :content="$t('tooltip.backToTop')" placement="top">
+      <back-to-top :custom-style="myBackToTopStyle" :visibility-height="300" :back-position="50" transition-name="fade"/>
+    </el-tooltip>
   </div>
 </template>
 
@@ -131,11 +135,13 @@ import { fetchList, deleteUser, createUser, modifyUser, changePwd } from '@/api/
 import { getRoleNameList } from '@/api/role'
 import { getDeptNameList } from '@/api/dept'
 import waves from '@/directive/waves' // 水波纹指令
+import BackToTop from '@/components/BackToTop'
 
 export default {
   directives: {
     waves
   },
+  components: { BackToTop },
   data() {
     const validatePhone = (rule, value, callback) => {
       const reg = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/
@@ -222,6 +228,15 @@ export default {
       changePwdRule: {
         newPassword: [{ required: true, trigger: 'blur', validator: validatePassword }],
         confirmPwd: [{ required: true, trigger: 'blur', validator: validateConfirmPwd }]
+      },
+      myBackToTopStyle: {
+        right: '50px',
+        bottom: '50px',
+        width: '40px',
+        height: '40px',
+        'border-radius': '4px',
+        'line-height': '45px', // 请保持与高度一致以垂直居中 Please keep consistent with height to center vertically
+        background: '#e7eaf1'// 按钮的背景颜色 The background color of the button
       }
     }
   },

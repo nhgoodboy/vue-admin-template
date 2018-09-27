@@ -167,7 +167,7 @@ export default {
       } else if (this.currentRow.id === 1) {
         this.$message({
           type: 'warning',
-          message: '不允许删除超级管理员'
+          message: '不允许删除超级管理员角色'
         })
       } else {
         this.$confirm('确定删除该条数据吗', '提示', {
