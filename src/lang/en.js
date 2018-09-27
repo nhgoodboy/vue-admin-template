@@ -154,7 +154,8 @@ export default {
     male: 'Male',
     female: 'Female',
     using: 'Using',
-    freeze: 'Freeze'
+    freeze: 'Freeze',
+    birthday: 'Birthday'
   },
   errorLog: {
     tips: 'Please click the bug icon in the upper right corner',
@@ -190,5 +191,8 @@ export default {
   },
   tooltip: {
     backToTop: 'BackToTop'
+  },
+  profile: {
+    change_avatar: 'Click to change avatar'
   }
 }

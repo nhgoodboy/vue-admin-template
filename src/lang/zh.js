@@ -154,7 +154,8 @@ export default {
     male: '男',
     female: '女',
     using: '启用',
-    freeze: '冻结'
+    freeze: '冻结',
+    birthday: '出生日期'
   },
   errorLog: {
     tips: '请点击右上角bug小图标',
@@ -190,5 +191,8 @@ export default {
   },
   tooltip: {
     backToTop: '返回顶部'
+  },
+  profile: {
+    change_avatar: '点 击 更 换 头 像'
   }
 }

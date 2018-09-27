@@ -124,7 +124,7 @@ export const constantRouterMap = [
 
   {
     path: '/profile',
-    // redirect: 'profile', // 重定向地址，在面包屑中点击会重定向去的地址
+    redirect: '/profile/profile', // 重定向地址，在面包屑中点击会重定向去的地址
     component: Layout,
     hidden: true,
     children: [
