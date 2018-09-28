@@ -6,9 +6,9 @@
           {{ $t('profile.change_avatar') }}
         </pan-thumb>
       </div>
-      <el-form ref="form" :model="form" :inline="true" :rules="editRules" class="form-box">
-        <el-form-item :label-width="formLabelWidth" :label="$t('table.account')" prop="account" class="form-item">
-          <el-input v-if="isEdit" v-model="form.account" disabled="true" class="input-box"/>
+      <el-form ref="form" :model="form" :rules="editRules" :inline-message="true" class="form-box">
+        <el-form-item :label-width="formLabelWidth" :label="$t('table.account')" class="form-item">
+          <el-input v-if="isEdit" v-model="form.account" :disabled="true" class="input-box"/>
           <div v-else class="text-box">{{ form.account }}</div>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" :label="$t('table.name')" prop="name" class="form-item">
@@ -22,23 +22,23 @@
           </el-select>
           <div v-else class="text-box">{{ form.sex }}</div>
         </el-form-item>
-        <el-form-item :label-width="formLabelWidth" :label="$t('table.role')" prop="role" class="form-item">
-          <el-input v-if="isEdit" v-model="form.role" class="input-box" disabled="true"/>
+        <el-form-item :label-width="formLabelWidth" :label="$t('table.role')" class="form-item">
+          <el-input v-if="isEdit" v-model="form.role" :disabled="true" class="input-box"/>
           <div v-else class="text-box">{{ form.role }}</div>
         </el-form-item>
-        <el-form-item :label-width="formLabelWidth" :label="$t('table.dept')" prop="dept" class="form-item">
-          <el-input v-if="isEdit" v-model="form.dept" class="input-box" disabled="true"/>
+        <el-form-item :label-width="formLabelWidth" :label="$t('table.dept')" class="form-item">
+          <el-input v-if="isEdit" v-model="form.dept" :disabled="true" class="input-box"/>
           <div v-else class="text-box">{{ form.dept }}</div>
         </el-form-item>
-        <el-form-item :label-width="formLabelWidth" :label="$t('table.email')" prop="email" class="form-item">
+        <el-form-item :label-width="formLabelWidth" :label="$t('table.email')" class="form-item" prop="email">
           <el-input v-if="isEdit" v-model="form.email" class="input-box"/>
           <div v-else class="text-box">{{ form.email }}</div>
         </el-form-item>
-        <el-form-item :label-width="formLabelWidth" :label="$t('table.phone')" prop="phone" class="form-item">
+        <el-form-item :label-width="formLabelWidth" :label="$t('table.phone')" class="form-item" prop="phone">
           <el-input v-if="isEdit" v-model="form.phone" class="input-box"/>
           <div v-else class="text-box">{{ form.phone }}</div>
         </el-form-item>
-        <el-form-item :label-width="formLabelWidth" :label="$t('table.birthday')" prop="birthday" class="form-item">
+        <el-form-item :label-width="formLabelWidth" :label="$t('table.birthday')" class="form-item">
           <el-date-picker
             v-if="isEdit"
             v-model="form.birthday"
@@ -49,14 +49,14 @@
           <div v-else class="text-box">{{ form.birthday }}</div>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" :label="$t('table.createtime')" prop="createtime" class="form-item">
-          <el-input v-if="isEdit" v-model="form.createtime" class="input-box" disabled="true"/>
+          <el-input v-if="isEdit" v-model="form.createtime" :disabled="true" class="input-box"/>
           <div v-else class="text-box">{{ form.createtime }}</div>
         </el-form-item>
         <el-form-item class="button-form-item">
           <el-button v-if="!isEdit" type="primary" @click="handleEdit">{{ $t('table.edit') }}</el-button>
           <div v-else>
             <el-button @click="handleCancel">{{ $t('table.cancel') }}</el-button>
-            <el-button type="primary" @click="handleConfirm">{{ $t('table.confirm') }}</el-button>
+            <el-button type="primary" @click="handleConfirm('form')">{{ $t('table.confirm') }}</el-button>
           </div>
         </el-form-item>
       </el-form>
@@ -66,6 +66,8 @@
 
 <script>
 import PanThumb from '@/components/PanThumb'
+import { mapGetters } from 'vuex'
+import { editUserInfo } from '@/api/user'
 
 export default {
   components: { PanThumb },
@@ -88,28 +90,21 @@ export default {
       }
     }
     return {
-      avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
-      form: {
-        id: 1,
-        account: '12332',
-        name: 'zxczxc',
-        sex: '男',
-        role: '超级管理员',
-        dept: '总公司',
-        email: '898989@ qq.com',
-        phone: 18956859458,
-        birthday: '2018-07-01 10:00:00',
-        createtime: '2018-07-01 10:00:00'
-      },
       isEdit: false,
       editRules: {
         name: [{ required: true, trigger: 'blur', message: '请输入性名' }],
-        phone: [{ required: false, trigger: 'blur', validator: validatePhone }],
+        sex: [{ required: true, trigger: 'change', message: '请选择性别' }],
         email: [{ required: false, trigger: 'blur', validator: validateEmail }],
-        sex: [{ required: true, trigger: 'change', message: '请选择性别' }]
+        phone: [{ required: false, trigger: 'blur', validator: validatePhone }]
       },
       formLabelWidth: '100px'
     }
+  },
+
+  computed: {
+    ...mapGetters(
+      { form: 'userInfo', avatar: 'avatar' }
+    )
   },
 
   created() {
@@ -121,12 +116,35 @@ export default {
     },
     handleEdit() {
       this.isEdit = true
+      this.$nextTick(() => { // 清空验证
+        this.$refs['form'].clearValidate()
+      })
     },
     handleCancel() {
       this.isEdit = false
     },
-    handleConfirm() {
-      this.isEdit = false
+    handleConfirm(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          const reqForm = {
+            token: this.form.token,
+            name: this.form.name,
+            sex: this.form.sex,
+            email: this.form.email,
+            phone: this.form.phone,
+            birthday: this.form.birthday
+          }
+          editUserInfo(reqForm).then(response => {
+            this.isEdit = false
+            this.$message({
+              type: 'success',
+              message: '修改成功'
+            })
+          })
+        } else {
+          return false
+        }
+      })
     }
   }
 }
@@ -158,7 +176,7 @@ export default {
   }
   .button-form-item {
     margin-top: 5px;
-    padding-right: 10px;
+    padding-right: 20px;
     float: right;
   }
 </style>

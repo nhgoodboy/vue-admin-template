@@ -4,23 +4,55 @@ import { getToken, setToken, removeToken } from '@/utils/auth'
 const user = {
   state: {
     token: getToken(),
-    name: '',
     avatar: '',
-    roles: []
+    account: '',
+    name: '',
+    sex: '',
+    role: '',
+    roles: [],
+    dept: '',
+    email: '',
+    phone: '',
+    birthday: '',
+    createtime: ''
   },
 
   mutations: {
     SET_TOKEN: (state, token) => {
       state.token = token
     },
-    SET_NAME: (state, name) => {
-      state.name = name
-    },
     SET_AVATAR: (state, avatar) => {
       state.avatar = avatar
     },
+    SET_ACCOUNT: (state, account) => {
+      state.account = account
+    },
+    SET_NAME: (state, name) => {
+      state.name = name
+    },
+    SET_SEX: (state, sex) => {
+      state.sex = sex
+    },
+    SET_ROLE: (state, role) => {
+      state.role = role
+    },
     SET_ROLES: (state, roles) => {
       state.roles = roles
+    },
+    SET_DEPT: (state, dept) => {
+      state.dept = dept
+    },
+    SET_EMAIL: (state, email) => {
+      state.email = email
+    },
+    SET_PHONE: (state, phone) => {
+      state.phone = phone
+    },
+    SET_BIRTHDAY: (state, birthday) => {
+      state.birthday = birthday
+    },
+    SET_CREATETIME: (state, createtime) => {
+      state.createtime = createtime
     }
   },
 
@@ -50,8 +82,16 @@ const user = {
           } else {
             reject('getInfo: roles must be a non-null array !')
           }
-          commit('SET_NAME', data.name)
           commit('SET_AVATAR', data.avatar)
+          commit('SET_ACCOUNT', data.account)
+          commit('SET_NAME', data.name)
+          commit('SET_SEX', data.sex)
+          commit('SET_ROLE', data.role)
+          commit('SET_DEPT', data.dept)
+          commit('SET_EMAIL', data.email)
+          commit('SET_PHONE', data.phone)
+          commit('SET_BIRTHDAY', data.birthday)
+          commit('SET_CREATETIME', data.createtime)
           resolve(response)
         }).catch(error => {
           reject(error)

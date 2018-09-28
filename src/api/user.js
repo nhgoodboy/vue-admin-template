@@ -45,3 +45,10 @@ export function changePwd(form) {
   })
 }
 
+export function editUserInfo(form) {
+  return request({
+    url: '/admin/user/editUserInfo',
+    method: 'post',
+    data: form
+  })
+}
