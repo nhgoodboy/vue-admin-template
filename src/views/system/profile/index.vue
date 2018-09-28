@@ -9,46 +9,57 @@
       <el-form ref="form" :model="form" :inline="true" :rules="editRules" class="form-box">
         <el-form-item :label-width="formLabelWidth" :label="$t('table.account')" prop="account" class="form-item">
           <el-input v-if="isEdit" v-model="form.account" disabled="true" class="input-box"/>
-          <div v-else class="input-box">{{ form.account }}</div>
+          <div v-else class="text-box">{{ form.account }}</div>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" :label="$t('table.name')" prop="name" class="form-item">
           <el-input v-if="isEdit" v-model="form.name" class="input-box"/>
-          <div v-else class="input-box">{{ form.name }}</div>
+          <div v-else class="text-box">{{ form.name }}</div>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" :label="$t('table.sex')" prop="sex" class="form-item">
-          <el-input v-if="isEdit" v-model="form.sex" class="input-box"/>
-          <div v-else class="input-box">{{ form.sex }}</div>
+          <el-select v-if="isEdit" v-model="form.sex" class="input-box">
+            <el-option label="男" value="男"/>
+            <el-option label="女" value="女"/>
+          </el-select>
+          <div v-else class="text-box">{{ form.sex }}</div>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" :label="$t('table.role')" prop="role" class="form-item">
           <el-input v-if="isEdit" v-model="form.role" class="input-box" disabled="true"/>
-          <div v-else class="input-box">{{ form.role }}</div>
+          <div v-else class="text-box">{{ form.role }}</div>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" :label="$t('table.dept')" prop="dept" class="form-item">
           <el-input v-if="isEdit" v-model="form.dept" class="input-box" disabled="true"/>
-          <div v-else class="input-box">{{ form.dept }}</div>
+          <div v-else class="text-box">{{ form.dept }}</div>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" :label="$t('table.email')" prop="email" class="form-item">
           <el-input v-if="isEdit" v-model="form.email" class="input-box"/>
-          <div v-else class="input-box">{{ form.email }}</div>
+          <div v-else class="text-box">{{ form.email }}</div>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" :label="$t('table.phone')" prop="phone" class="form-item">
           <el-input v-if="isEdit" v-model="form.phone" class="input-box"/>
-          <div v-else class="input-box">{{ form.phone }}</div>
+          <div v-else class="text-box">{{ form.phone }}</div>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" :label="$t('table.birthday')" prop="birthday" class="form-item">
-          <el-input v-if="isEdit" v-model="form.birthday" class="input-box"/>
-          <div v-else class="input-box">{{ form.birthday }}</div>
+          <el-date-picker
+            v-if="isEdit"
+            v-model="form.birthday"
+            class="input-box"
+            type="date"
+            placeholder="选择日期"
+            value-format="yyyy-MM-dd"/>
+          <div v-else class="text-box">{{ form.birthday }}</div>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" :label="$t('table.createtime')" prop="createtime" class="form-item">
           <el-input v-if="isEdit" v-model="form.createtime" class="input-box" disabled="true"/>
-          <div v-else class="input-box">{{ form.createtime }}</div>
+          <div v-else class="text-box">{{ form.createtime }}</div>
+        </el-form-item>
+        <el-form-item class="button-form-item">
+          <el-button v-if="!isEdit" type="primary" @click="handleEdit">{{ $t('table.edit') }}</el-button>
+          <div v-else>
+            <el-button @click="handleCancel">{{ $t('table.cancel') }}</el-button>
+            <el-button type="primary" @click="handleConfirm">{{ $t('table.confirm') }}</el-button>
+          </div>
         </el-form-item>
       </el-form>
-      <el-button v-if="!isEdit" class="button-box" type="primary" @click="handleEdit">{{ $t('table.edit') }}</el-button>
-      <div v-else class="button-box-else">
-        <el-button @click="handleCancel">{{ $t('table.cancel') }}</el-button>
-        <el-button type="primary" @click="handleConfirm">{{ $t('table.confirm') }}</el-button>
-      </div>
     </el-card>
   </div>
 </template>
@@ -133,22 +144,21 @@ export default {
   .form-box {
     width: 350px;
     margin: 0px auto;
-    /*background-color: #E65D6E;*/
   }
   .form-item {
     width: 350px;
     margin: 5px auto;
-    /*background-color: #30B08F;*/
   }
   .input-box {
     width: 230px;
   }
-  .button-box {
-    margin-top: 5px;
-    margin-left: 315px;
+  .text-box {
+    width: 230px;
+    margin-left: 10px;
   }
-  .button-box-else {
+  .button-form-item {
     margin-top: 5px;
-    margin-left: 190px;
+    padding-right: 10px;
+    float: right;
   }
 </style>

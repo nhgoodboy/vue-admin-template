@@ -35,7 +35,7 @@
         @current-change="handleCurrentPageChange"/>
     </div>
 
-    <el-dialog :visible.sync="dialogFormVisible" :title="formTitle" width="30%">
+    <el-dialog :visible.sync="dialogFormVisible" :title="formTitle" width="25%">
       <el-form ref="form" :model="form" :rules="createOrModifyRules">
         <el-form-item :label-width="formLabelWidth" :label="$t('table.name1')" prop="name">
           <el-input v-model="form.name" style="width: 200px"/>

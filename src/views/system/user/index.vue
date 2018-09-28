@@ -57,25 +57,25 @@
         @current-change="handleCurrentPageChange"/>
     </div>
 
-    <el-dialog :visible.sync="dialogFormVisible" :title="formTitle">
+    <el-dialog :visible.sync="dialogFormVisible" :title="formTitle" width="40%">
       <el-form ref="form" :model="form" :inline="true" :rules="createOrModifyRules">
         <el-form-item :label-width="formLabelWidth" :label="$t('table.account')" prop="account">
-          <el-input v-model="form.account" :disabled="!isCreate"/>
+          <el-input v-model="form.account" :disabled="!isCreate" :style="inputStyle"/>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" :label="$t('table.name')" prop="name">
-          <el-input v-model="form.name"/>
+          <el-input v-model="form.name" :style="inputStyle"/>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" :label="$t('table.phone')" prop="phone">
-          <el-input v-model="form.phone"/>
+          <el-input v-model="form.phone" :style="inputStyle"/>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" :label="$t('table.email')" prop="email">
-          <el-input v-model="form.email"/>
+          <el-input v-model="form.email" :style="inputStyle"/>
         </el-form-item>
         <el-form-item v-if="isCreate" :label-width="formLabelWidth" :label="$t('table.password')" prop="password">
-          <el-input v-model="form.password" type="password"/>
+          <el-input v-model="form.password" :style="inputStyle" type="password"/>
         </el-form-item>
         <el-form-item v-if="isCreate" :label-width="formLabelWidth" :label="$t('table.confirm_pwd')" prop="confirm_pwd">
-          <el-input v-model="form.confirm_pwd" type="password"/>
+          <el-input v-model="form.confirm_pwd" :style="inputStyle" type="password"/>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" :label="$t('table.status')" prop="status">
           <el-select v-model="form.status">
@@ -83,7 +83,7 @@
             <el-option label="冻结" value="冻结"/>
           </el-select>
         </el-form-item>
-        <el-form-item :label="$t('table.sex')" label-width="105px" prop="sex">
+        <el-form-item :label="$t('table.sex')" :label-width="formLabelWidth" prop="sex">
           <el-select v-model="form.sex">
             <el-option label="男" value="男"/>
             <el-option label="女" value="女"/>
@@ -94,13 +94,13 @@
             <el-option v-for="item in deptNameList" :key="item" :label="item" :value="item"/>
           </el-select>
         </el-form-item>
-        <el-form-item :label="$t('table.role')" label-width="105px" prop="role">
+        <el-form-item :label="$t('table.role')" :label-width="formLabelWidth" prop="role">
           <el-select v-model="form.role">
             <el-option v-for="item in roleNameList" :key="item" :label="item" :value="item"/>
           </el-select>
         </el-form-item>
         <el-form-item v-if="!isCreate" :label-width="formLabelWidth" :label="$t('table.createtime')">
-          <el-input v-model="form.createtime" :disabled="true"/>
+          <el-input v-model="form.createtime" :disabled="true" :style="inputStyle"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -109,13 +109,13 @@
       </div>
     </el-dialog>
 
-    <el-dialog :visible.sync="dialogPwdFormVisible" :title="$t('button.changePassword')" width="30%">
+    <el-dialog :visible.sync="dialogPwdFormVisible" :title="$t('button.changePassword')" width="25%">
       <el-form ref="changePwdForm" :model="changePwdForm" :rules="changePwdRule">
         <el-form-item :label-width="formLabelWidth" :label="$t('table.new_password')" prop="newPassword">
-          <el-input v-model="changePwdForm.newPassword" type="password"/>
+          <el-input v-model="changePwdForm.newPassword" :style="inputStyle" type="password"/>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" :label="$t('table.confirm_pwd')" prop="confirmPwd">
-          <el-input v-model="changePwdForm.confirmPwd" type="password"/>
+          <el-input v-model="changePwdForm.confirmPwd" :style="inputStyle" type="password"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -237,6 +237,9 @@ export default {
         'border-radius': '4px',
         'line-height': '45px', // 请保持与高度一致以垂直居中 Please keep consistent with height to center vertically
         background: '#e7eaf1'// 按钮的背景颜色 The background color of the button
+      },
+      inputStyle: {
+        width: '200px'
       }
     }
   },
@@ -424,3 +427,7 @@ export default {
   }
 }
 </script>
+
+<style rel="stylesheet/scss" lang="scss" scoped>
+
+</style>
