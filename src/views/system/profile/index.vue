@@ -9,34 +9,34 @@
       <el-form ref="form" :model="form" :rules="editRules" :inline-message="true" class="form-box">
         <el-form-item :label-width="formLabelWidth" :label="$t('table.account')" class="form-item">
           <el-input v-if="isEdit" v-model="form.account" :disabled="true" class="input-box"/>
-          <div v-else class="text-box">{{ form.account }}</div>
+          <div v-else class="text-box">{{ userInfo.account }}</div>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" :label="$t('table.name')" prop="name" class="form-item">
           <el-input v-if="isEdit" v-model="form.name" class="input-box"/>
-          <div v-else class="text-box">{{ form.name }}</div>
+          <div v-else class="text-box">{{ userInfo.name }}</div>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" :label="$t('table.sex')" prop="sex" class="form-item">
           <el-select v-if="isEdit" v-model="form.sex" class="input-box">
             <el-option label="男" value="男"/>
             <el-option label="女" value="女"/>
           </el-select>
-          <div v-else class="text-box">{{ form.sex }}</div>
+          <div v-else class="text-box">{{ userInfo.sex }}</div>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" :label="$t('table.role')" class="form-item">
           <el-input v-if="isEdit" v-model="form.role" :disabled="true" class="input-box"/>
-          <div v-else class="text-box">{{ form.role }}</div>
+          <div v-else class="text-box">{{ userInfo.role }}</div>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" :label="$t('table.dept')" class="form-item">
           <el-input v-if="isEdit" v-model="form.dept" :disabled="true" class="input-box"/>
-          <div v-else class="text-box">{{ form.dept }}</div>
+          <div v-else class="text-box">{{ userInfo.dept }}</div>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" :label="$t('table.email')" class="form-item" prop="email">
           <el-input v-if="isEdit" v-model="form.email" class="input-box"/>
-          <div v-else class="text-box">{{ form.email }}</div>
+          <div v-else class="text-box">{{ userInfo.email }}</div>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" :label="$t('table.phone')" class="form-item" prop="phone">
           <el-input v-if="isEdit" v-model="form.phone" class="input-box"/>
-          <div v-else class="text-box">{{ form.phone }}</div>
+          <div v-else class="text-box">{{ userInfo.phone }}</div>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" :label="$t('table.birthday')" class="form-item">
           <el-date-picker
@@ -50,7 +50,7 @@
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" :label="$t('table.createtime')" prop="createtime" class="form-item">
           <el-input v-if="isEdit" v-model="form.createtime" :disabled="true" class="input-box"/>
-          <div v-else class="text-box">{{ form.createtime }}</div>
+          <div v-else class="text-box">{{ userInfo.createtime }}</div>
         </el-form-item>
         <el-form-item class="button-form-item">
           <el-button v-if="!isEdit" type="primary" @click="handleEdit">{{ $t('table.edit') }}</el-button>
@@ -90,6 +90,7 @@ export default {
       }
     }
     return {
+      form: '',
       isEdit: false,
       editRules: {
         name: [{ required: true, trigger: 'blur', message: '请输入性名' }],
@@ -103,11 +104,15 @@ export default {
 
   computed: {
     ...mapGetters(
-      { form: 'userInfo', avatar: 'avatar' }
+      { userInfo: 'userInfo', avatar: 'avatar' }
     )
   },
 
   created() {
+  },
+
+  mounted() {
+    this.form = Object.assign({}, this.userInfo)
   },
 
   methods: {
@@ -115,6 +120,7 @@ export default {
       this.$message('hello')
     },
     handleEdit() {
+      this.form = Object.assign({}, this.userInfo)
       this.isEdit = true
       this.$nextTick(() => { // 清空验证
         this.$refs['form'].clearValidate()
@@ -122,6 +128,9 @@ export default {
     },
     handleCancel() {
       this.isEdit = false
+      this.$nextTick(() => { // 清空验证
+        this.$refs['form'].clearValidate()
+      })
     },
     handleConfirm(formName) {
       this.$refs[formName].validate((valid) => {
@@ -136,6 +145,7 @@ export default {
           }
           editUserInfo(reqForm).then(response => {
             this.isEdit = false
+            this.$store.dispatch('GetInfo').then(res => {}).catch(() => {}) // 拉取用户信息
             this.$message({
               type: 'success',
               message: '修改成功'
