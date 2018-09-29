@@ -42,7 +42,13 @@ export const constantRouterMap = [
 
   {
     path: '/404',
-    component: () => import('@/views/404'),
+    component: () => import('@/views/errorPage/404'),
+    hidden: true
+  },
+
+  {
+    path: '/401',
+    component: () => import('@/views/errorPage/401'),
     hidden: true
   },
 
@@ -56,6 +62,21 @@ export const constantRouterMap = [
       component: () => import('@/views/dashboard/index'),
       meta: { title: 'dashboard', icon: 'dashboard', noCache: true }
     }]
+  },
+
+  {
+    path: '/profile',
+    redirect: '/profile/profile', // 重定向地址，在面包屑中点击会重定向去的地址
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: 'profile',
+        name: 'profile',
+        component: () => import('@/views/system/profile/index'),
+        meta: { title: 'profile', icon: 'form' }
+      }
+    ]
   },
 
   {
@@ -90,49 +111,6 @@ export const constantRouterMap = [
         name: 'Test',
         component: () => import('@/views/test/index'),
         meta: { title: 'Test', icon: 'form' }
-      }
-    ]
-  },
-
-  {
-    path: '/system',
-    component: Layout,
-    redirect: '/system/user',
-    name: 'system',
-    meta: { title: 'system', icon: 'example' },
-    children: [
-      {
-        path: 'user',
-        name: 'user',
-        component: () => import('@/views/system/user/index'),
-        meta: { title: 'user', icon: 'form' }
-      },
-      {
-        path: 'role',
-        name: 'role',
-        component: () => import('@/views/system/role/index'),
-        meta: { title: 'role', icon: 'form' }
-      },
-      {
-        path: 'dept',
-        name: 'dept',
-        component: () => import('@/views/system/dept/index'),
-        meta: { title: 'dept', icon: 'form' }
-      }
-    ]
-  },
-
-  {
-    path: '/profile',
-    redirect: '/profile/profile', // 重定向地址，在面包屑中点击会重定向去的地址
-    component: Layout,
-    hidden: true,
-    children: [
-      {
-        path: 'profile',
-        name: 'profile',
-        component: () => import('@/views/system/profile/index'),
-        meta: { title: 'profile', icon: 'form' }
       }
     ]
   },
@@ -227,3 +205,35 @@ export default new Router({
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRouterMap
 })
+
+export const asyncRouterMap = [
+  {
+    path: '/system',
+    component: Layout,
+    redirect: '/system/user',
+    name: 'system',
+    meta: { title: 'system', icon: 'example', roles: ['admin'] },
+    children: [
+      {
+        path: 'user',
+        name: 'user',
+        component: () => import('@/views/system/user/index'),
+        meta: { title: 'user', icon: 'form' }
+      },
+      {
+        path: 'role',
+        name: 'role',
+        component: () => import('@/views/system/role/index'),
+        meta: { title: 'role', icon: 'form' }
+      },
+      {
+        path: 'dept',
+        name: 'dept',
+        component: () => import('@/views/system/dept/index'),
+        meta: { title: 'dept', icon: 'form' }
+      }
+    ]
+  },
+
+  { path: '*', redirect: '/404', hidden: true }
+]
