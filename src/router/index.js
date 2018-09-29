@@ -9,6 +9,9 @@ Vue.use(Router)
 /* Layout */
 import Layout from '../views/layout/Layout'
 
+/* Router Modules */
+import systemRouter from './modules/system'
+
 /**
  * hidden: true                   if `hidden:true` will not show in the sidebar(default is false)
  * alwaysShow: true               if set true, will always show the root menu, whatever its child routes length
@@ -207,33 +210,7 @@ export default new Router({
 })
 
 export const asyncRouterMap = [
-  {
-    path: '/system',
-    component: Layout,
-    redirect: '/system/user',
-    name: 'system',
-    meta: { title: 'system', icon: 'example', roles: ['admin'] },
-    children: [
-      {
-        path: 'user',
-        name: 'user',
-        component: () => import('@/views/system/user/index'),
-        meta: { title: 'user', icon: 'form' }
-      },
-      {
-        path: 'role',
-        name: 'role',
-        component: () => import('@/views/system/role/index'),
-        meta: { title: 'role', icon: 'form' }
-      },
-      {
-        path: 'dept',
-        name: 'dept',
-        component: () => import('@/views/system/dept/index'),
-        meta: { title: 'dept', icon: 'form' }
-      }
-    ]
-  },
+  systemRouter,
 
   { path: '*', redirect: '/404', hidden: true }
 ]
