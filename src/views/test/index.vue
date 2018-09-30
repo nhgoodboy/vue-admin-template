@@ -59,7 +59,7 @@
       :file-list="fileList"
       :on-success="uploadSuccess"
       :on-error="uploadError"
-      action="http://127.0.0.1:8180/miniprogram/upload/"
+      action="http://127.0.0.1:8081/admin/fileInf/upload"
       list-type="picture-card"
       show-file-list>
       <i class="el-icon-plus"/>
