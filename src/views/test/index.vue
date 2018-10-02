@@ -162,7 +162,6 @@ export default {
     },
     handleRemove(file, fileList) {
       console.log(file, fileList)
-      // this.fileList.
       console.log(this.fileList)
     },
     handlePictureCardPreview(file) {

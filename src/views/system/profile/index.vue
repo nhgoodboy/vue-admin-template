@@ -1,9 +1,15 @@
 <template>
   <div class="app-container">
     <el-card class="box-card">
-      <div slot="header" class="image-box" @click="changeAvatarr">
+      <div slot="header" class="image-box">
         <pan-thumb :image="avatar" width="120px" height="120px">
-          {{ $t('profile.change_avatar') }}
+          <el-upload
+            :on-success="uploadSuccess"
+            :on-error="uploadError"
+            :show-file-list="false"
+            action="http://127.0.0.1:8081/admin/fileInf/upload">
+            {{ $t('profile.change_avatar') }}
+          </el-upload>
         </pan-thumb>
       </div>
       <el-form ref="form" :model="form" :rules="editRules" :inline-message="true" class="form-box">
@@ -61,13 +67,20 @@
         </el-form-item>
       </el-form>
     </el-card>
+
+    <el-upload
+      :on-success="uploadSuccess"
+      :on-error="uploadError"
+      action="http://127.0.0.1:8081/admin/fileInf/upload">
+      <el-button size="small" type="primary">点击上传</el-button>
+    </el-upload>
   </div>
 </template>
 
 <script>
 import PanThumb from '@/components/PanThumb'
 import { mapGetters } from 'vuex'
-import { editUserInfo } from '@/api/user'
+import { editUserInfo, changeAvatar } from '@/api/user'
 
 export default {
   components: { PanThumb },
@@ -98,7 +111,8 @@ export default {
         email: [{ required: false, trigger: 'blur', validator: validateEmail }],
         phone: [{ required: false, trigger: 'blur', validator: validatePhone }]
       },
-      formLabelWidth: '100px'
+      formLabelWidth: '100px',
+      oldAvatar: ''
     }
   },
 
@@ -116,8 +130,18 @@ export default {
   },
 
   methods: {
-    changeAvatarr() {
-      this.$message('hello')
+    uploadError(err, file, fileList) {
+      console.info(err)
+    },
+    uploadSuccess(response, file, fileList) {
+      console.info(response.data.fileInfId)
+      console.info(file)
+      // console.info(fileList)
+      this.oldAvatar = this.avatar
+      this.$store.commit('SET_AVATAR', file.url)
+      changeAvatar(response.data.fileInfId)
+      // console.info(this.oldAvatar)
+      // console.info(this.avatar)
     },
     handleEdit() {
       this.form = Object.assign({}, this.userInfo)

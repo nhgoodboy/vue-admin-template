@@ -99,6 +99,17 @@ const user = {
       })
     },
 
+    ChangeAvatar({ commit, state }) {
+      // return new Promise((resolve, reject) => {
+      //   getTempAvatar(state.token).then(() => {
+      //     commit('SET_AVATAR', '')
+      //     resolve()
+      //   }).catch(error => {
+      //     reject(error)
+      //   })
+      // })
+    },
+
     // 登出
     LogOut({ commit, state }) {
       return new Promise((resolve, reject) => {

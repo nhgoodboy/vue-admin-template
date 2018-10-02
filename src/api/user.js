@@ -52,3 +52,13 @@ export function editUserInfo(form) {
     data: form
   })
 }
+
+export function changeAvatar(userHeadId) {
+  return request({
+    url: '/admin/user/changeAvatar',
+    method: 'post',
+    params: {
+      userHeadId: userHeadId
+    }
+  })
+}
