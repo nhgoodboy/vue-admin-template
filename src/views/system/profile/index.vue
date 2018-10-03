@@ -67,13 +67,6 @@
         </el-form-item>
       </el-form>
     </el-card>
-
-    <el-upload
-      :on-success="uploadSuccess"
-      :on-error="uploadError"
-      action="http://127.0.0.1:8081/admin/fileInf/upload">
-      <el-button size="small" type="primary">点击上传</el-button>
-    </el-upload>
   </div>
 </template>
 
@@ -87,6 +80,7 @@ export default {
 
   data() {
     const validatePhone = (rule, value, callback) => {
+      // 手机号码正则表达式
       const reg = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/
       if (value.trim() && !reg.test(value)) {
         callback(new Error('请输入正确的电话'))
@@ -95,6 +89,7 @@ export default {
       }
     }
     const validateEmail = (rule, value, callback) => {
+      // 邮箱正则表达式
       const reg = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,5}$/
       if (value.trim() && !reg.test(value)) {
         callback(new Error('请输入正确的邮箱'))
@@ -134,8 +129,6 @@ export default {
       console.info(err)
     },
     uploadSuccess(response, file, fileList) {
-      console.info(response.data.fileInfId)
-      console.info(file)
       this.oldAvatar = this.avatar
       changeAvatar(response.data.fileInfId).then(response => {
         this.$store.commit('SET_AVATAR', process.env.BASE_API + response.data)
