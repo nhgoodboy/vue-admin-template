@@ -136,12 +136,10 @@ export default {
     uploadSuccess(response, file, fileList) {
       console.info(response.data.fileInfId)
       console.info(file)
-      // console.info(fileList)
       this.oldAvatar = this.avatar
-      this.$store.commit('SET_AVATAR', file.url)
-      changeAvatar(response.data.fileInfId)
-      // console.info(this.oldAvatar)
-      // console.info(this.avatar)
+      changeAvatar(response.data.fileInfId).then(response => {
+        this.$store.commit('SET_AVATAR', process.env.BASE_API + response.data)
+      })
     },
     handleEdit() {
       this.form = Object.assign({}, this.userInfo)
