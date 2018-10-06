@@ -7,7 +7,8 @@
             :on-success="uploadSuccess"
             :on-error="uploadError"
             :show-file-list="false"
-            action="http://127.0.0.1:8081/admin/fileInf/upload">
+            :with-credentials="true"
+            action="http://localhost:8081/admin/fileInf/upload">
             {{ $t('profile.change_avatar') }}
           </el-upload>
         </pan-thumb>

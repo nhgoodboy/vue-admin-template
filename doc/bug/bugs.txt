@@ -1,3 +1,6 @@
 1、用户管理 create和modify的切换会造成 resetField 的indexOf Undefinded问题
-(以修复，使用$nextTick解决，详情见user/index.vue)
+(已修复，使用$nextTick解决，详情见user/index.vue)
+
+2、跨域请求导致sessionId不一致
+（已解决，axios.defaults.withCredentials = true）
 

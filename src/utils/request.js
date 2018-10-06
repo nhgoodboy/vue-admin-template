@@ -3,6 +3,8 @@ import { Message, MessageBox } from 'element-ui'
 import store from '../store'
 import { getToken } from '@/utils/auth'
 
+axios.defaults.withCredentials = true // 解决跨域请求sessionId不一致的问题
+
 // 创建axios实例
 const service = axios.create({
   baseURL: process.env.BASE_API, // api 的 base_url
