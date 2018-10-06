@@ -38,8 +38,8 @@
         :label="$t('table.phone')"
         prop="phone"/>
       <el-table-column
-        :label="$t('table.createtime')"
-        prop="createtime"/>
+        :label="$t('table.createTime')"
+        prop="createTime"/>
       <el-table-column
         :label="$t('table.status')"
         prop="status"/>
@@ -99,8 +99,8 @@
             <el-option v-for="item in roleNameList" :key="item" :label="item" :value="item"/>
           </el-select>
         </el-form-item>
-        <el-form-item v-if="!isCreate" :label-width="formLabelWidth" :label="$t('table.createtime')">
-          <el-input v-model="form.createtime" :disabled="true" :style="inputStyle"/>
+        <el-form-item v-if="!isCreate" :label-width="formLabelWidth" :label="$t('table.createTime')">
+          <el-input v-model="form.createTime" :disabled="true" :style="inputStyle"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -200,7 +200,7 @@ export default {
         email: '',
         phone: undefined,
         status: '',
-        createtime: ''
+        createTime: ''
       },
       formTitle: '',
       isCreate: true,

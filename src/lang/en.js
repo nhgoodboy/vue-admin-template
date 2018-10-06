@@ -140,7 +140,7 @@ export default {
     dept: 'Department',
     email: 'Email',
     phone: 'Phone',
-    createtime: 'CreateTime',
+    createTime: 'CreateTime',
     status: 'Status',
     parent_role: 'Parent Role',
     parent_dept: 'Parent Dept',

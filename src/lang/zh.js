@@ -140,7 +140,7 @@ export default {
     dept: '部门',
     email: '邮箱',
     phone: '电话',
-    createtime: '创建时间',
+    createTime: '创建时间',
     status: '状态',
     parent_role: '上级角色',
     parent_dept: '父部门',

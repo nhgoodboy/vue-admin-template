@@ -14,7 +14,7 @@ const user = {
     email: '',
     phone: '',
     birthday: '',
-    createtime: ''
+    createTime: ''
   },
 
   mutations: {
@@ -51,8 +51,8 @@ const user = {
     SET_BIRTHDAY: (state, birthday) => {
       state.birthday = birthday
     },
-    SET_CREATETIME: (state, createtime) => {
-      state.createtime = createtime
+    SET_CREATETIME: (state, createTime) => {
+      state.createTime = createTime
     }
   },
 
@@ -91,7 +91,7 @@ const user = {
           commit('SET_EMAIL', data.email)
           commit('SET_PHONE', data.phone)
           commit('SET_BIRTHDAY', data.birthday)
-          commit('SET_CREATETIME', data.createtime)
+          commit('SET_CREATETIME', data.createTime)
           resolve(response)
         }).catch(error => {
           reject(error)

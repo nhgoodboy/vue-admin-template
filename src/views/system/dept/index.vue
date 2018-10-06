@@ -14,7 +14,7 @@
       @current-change="handleCurrentRowChange">
       <el-table-column
         :label="$t('table.name1')"
-        prop="fullname"/>
+        prop="fullName"/>
       <el-table-column
         :label="$t('table.parent_dept')"
         prop="parent_dept"/>
@@ -34,8 +34,8 @@
 
     <el-dialog :visible.sync="dialogFormVisible" :title="formTitle" width="30%">
       <el-form ref="form" :model="form" :rules="createOrModifyRules">
-        <el-form-item :label-width="formLabelWidth" :label="$t('table.name1')" prop="fullname">
-          <el-input v-model="form.fullname" style="width: 200px"/>
+        <el-form-item :label-width="formLabelWidth" :label="$t('table.name1')" prop="fullName">
+          <el-input v-model="form.fullName" style="width: 200px"/>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" :label="$t('table.parent_dept')" prop="parent_dept">
           <el-select v-model="form.parent_dept">
@@ -73,11 +73,11 @@ export default {
       deptNameList: [],
       form: {
         id: undefined,
-        fullname: '',
+        fullName: '',
         parent_dept: ''
       },
       createOrModifyRules: {
-        fullname: [{ required: true, trigger: 'blur', message: '请输入部门名称' }],
+        fullName: [{ required: true, trigger: 'blur', message: '请输入部门名称' }],
         parent_dept: [{ required: true, trigger: 'change', message: '请选择父部门' }]
       }
     }
@@ -114,7 +114,7 @@ export default {
     },
     handleCreate() {
       this.form = {
-        fullname: '',
+        fullName: '',
         parent_dept: ''
       }
       this.formTitle = this.$t('button.create')
@@ -209,7 +209,7 @@ export default {
     },
     handleDisable(item) {
       if (this.currentRow) {
-        return item === this.currentRow.fullname
+        return item === this.currentRow.fullName
       }
       return false
     }

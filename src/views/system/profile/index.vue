@@ -55,9 +55,9 @@
             value-format="yyyy-MM-dd"/>
           <div v-else class="text-box">{{ form.birthday }}</div>
         </el-form-item>
-        <el-form-item :label-width="formLabelWidth" :label="$t('table.createtime')" prop="createtime" class="form-item">
-          <el-input v-if="isEdit" v-model="form.createtime" :disabled="true" class="input-box"/>
-          <div v-else class="text-box">{{ userInfo.createtime }}</div>
+        <el-form-item :label-width="formLabelWidth" :label="$t('table.createTime')" prop="createTime" class="form-item">
+          <el-input v-if="isEdit" v-model="form.createTime" :disabled="true" class="input-box"/>
+          <div v-else class="text-box">{{ userInfo.createTime }}</div>
         </el-form-item>
         <el-form-item class="button-form-item">
           <el-button v-if="!isEdit" type="primary" @click="handleEdit">{{ $t('table.edit') }}</el-button>
