@@ -53,12 +53,9 @@ export function editUserInfo(form) {
   })
 }
 
-export function changeAvatar(userHeadId) {
+export function changeAvatar(userHeadId) { // REST风格
   return request({
-    url: '/admin/user/changeAvatar',
-    method: 'post',
-    params: {
-      userHeadId: userHeadId
-    }
+    url: `/admin/user/changeAvatar/${userHeadId}`, // 字符串带参数写法
+    method: 'put'
   })
 }
