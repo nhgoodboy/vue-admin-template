@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "axios": "0.18.0",
+    "canvas-nest.js": "^2.0.3",
     "element-ui": "2.4.6",
     "file-saver": "^1.3.8",
     "js-cookie": "2.2.0",
@@ -22,6 +23,7 @@
     "nprogress": "0.2.0",
     "screenfull": "^3.3.3",
     "vue": "2.5.17",
+    "vue-canvas-nest": "^2.0.0",
     "vue-i18n": "^8.1.0",
     "vue-router": "3.0.1",
     "vuex": "3.0.1",
