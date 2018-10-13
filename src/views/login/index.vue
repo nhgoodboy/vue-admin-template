@@ -1,8 +1,8 @@
 <template>
   <div class="login-container">
     <vue-canvas-nest :config="{color:'255,255,255', opacity: '1', count: 120}"/>
-    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
 
+    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
       <div class="title-container">
         <h3 class="title">{{ $t('login.title') }}</h3>
         <lang-select class="set-language"/>
@@ -21,7 +21,7 @@
       </el-form-item>
 
       <el-form-item prop="password">
-        <span class="svg-container">
+        <span class="svg-container svg-container_password">
           <svg-icon icon-class="password" />
         </span>
         <el-input
@@ -36,7 +36,7 @@
         </span>
       </el-form-item>
 
-      <el-button :loading="loading" type="primary" style="width:100%;" @click.native.prevent="handleLogin">
+      <el-button :loading="loading" type="primary" style="width:100%; height: 45px" @click.native.prevent="handleLogin">
         {{ $t('login.logIn') }}
       </el-button>
     </el-form>
@@ -189,6 +189,9 @@ export default {
       display: inline-block;
       &_login {
         font-size: 20px;
+      }
+      &_password {
+        padding-left: 18px;
       }
     }
     .title-container {
