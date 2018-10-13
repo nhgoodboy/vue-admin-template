@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <vue-canvas-nest/>
+    <vue-canvas-nest :config="{color:'0,255,0', count: 88}"/>
     <el-select v-model="value" placeholder="请选择">
       <el-option
         v-for="item in options"
