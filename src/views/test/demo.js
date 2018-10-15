@@ -30,3 +30,4 @@ js_sign.payment(appid, waresid, waresname, price, cporderid, appuserid, notifyur
 // const pemData = '-----BEGIN RSA PRIVATE KEY-----' + '\n' + convertedData + '-----END RSA PRIVATE KEY-----'
 // const pemData = '-----BEGIN PUBLIC KEY-----' + '\n' + convertedData + '-----END PUBLIC KEY-----'
 // console.log('pemData:\n' + pemData)
+
