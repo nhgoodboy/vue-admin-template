@@ -1,6 +1,5 @@
 <template>
   <div class="app-container">
-    <vue-canvas-nest/>
     <el-select v-model="value" placeholder="请选择">
       <el-option
         v-for="item in options"
@@ -90,11 +89,8 @@
 </template>
 
 <script>
-import vueCanvasNest from 'vue-canvas-nest'
 
 export default {
-  components: { vueCanvasNest },
-
   data() {
     return {
       tableData: [{
