@@ -1,5 +1,6 @@
 <template>
   <div class="login-container">
+
     <vue-canvas-nest :config="{color:'255,255,255', opacity: '1', count: 120}"/>
 
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
