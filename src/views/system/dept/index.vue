@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import { fetchList, deleteDept, createDept, modifyDept } from '@/api/dept'
+import { getDepts, deleteDept, createDept, modifyDept } from '@/api/dept'
 import { getDeptNameList } from '@/api/dept'
 
 export default {
@@ -90,7 +90,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      fetchList(this.listQuery).then(response => {
+      getDepts(this.listQuery).then(response => {
         this.list = response.data.items
         this.total = response.data.total
         this.listLoading = false

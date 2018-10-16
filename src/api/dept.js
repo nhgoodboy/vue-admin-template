@@ -40,3 +40,12 @@ export function modifyDept(form) {
     data: form
   })
 }
+
+// mybatis查询测试
+export function getDepts(query) {
+  return request({
+    url: '/admin/dept/getDepts',
+    method: 'get',
+    params: query
+  })
+}
