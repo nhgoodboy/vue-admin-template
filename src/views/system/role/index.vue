@@ -122,10 +122,10 @@ export default {
     getDeptAndRoleNameList() {
       getRoleNameList().then(response => {
         this.roleNameList = response.data
-      })
+      }).catch(error => { console.log(error) })
       getDeptNameList().then(response => {
         this.deptNameList = response.data
-      })
+      }).catch(error => { console.log(error) })
     },
     handleCreate() {
       this.form = {
