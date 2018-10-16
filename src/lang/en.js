@@ -78,10 +78,10 @@ export default {
     size: 'Global Size'
   },
   login: {
-    title: 'Login Form',
+    title: 'System Login',
     logIn: 'Log in',
-    username: 'Username',
-    password: 'Password',
+    username: 'Please input username',
+    password: 'Please input password',
     any: 'any',
     thirdparty: 'Or connect with',
     thirdpartyTips: 'Can not be simulated on local, so please combine you own business simulation! ! !'

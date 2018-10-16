@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import { isvalidUsername } from '@/utils/validate'
+import jsSha256 from 'js-sha256' // sha256加密
 import LangSelect from '@/components/LangSelect'
 import vueCanvasNest from 'vue-canvas-nest'
 
@@ -54,7 +54,7 @@ export default {
   components: { LangSelect, vueCanvasNest },
   data() {
     const validateUsername = (rule, value, callback) => {
-      if (!isvalidUsername(value)) {
+      if (value.trim().length < 1) {
         callback(new Error('请输入正确的用户名'))
       } else {
         callback()
@@ -93,7 +93,11 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
-          this.$store.dispatch('Login', this.loginForm).then(() => {
+          const submitForm = {
+            username: this.loginForm.username,
+            password: jsSha256.sha256(this.loginForm.password)
+          }
+          this.$store.dispatch('Login', submitForm).then(() => {
             this.loading = false
             this.$router.push({ path: '/' })
           }).catch(() => {
@@ -172,16 +176,6 @@ export default {
       padding: 35px 35px 15px 35px;
       margin: 120px auto;
     }
-    /*.tips {*/
-    /*font-size: 14px;*/
-    /*color: #fff;*/
-    /*margin-bottom: 10px;*/
-    /*span {*/
-    /*&:first-of-type {*/
-    /*margin-right: 16px;*/
-    /*}*/
-    /*}*/
-    /*}*/
     .svg-container {
       padding: 6px 5px 6px 15px;
       color: $dark_gray;
