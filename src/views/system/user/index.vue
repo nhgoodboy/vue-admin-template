@@ -131,6 +131,7 @@
 </template>
 
 <script>
+import jsSha256 from 'js-sha256' // sha256加密
 import { fetchList, deleteUser, createUser, modifyUser, changePwd } from '@/api/user'
 import { getRoleNameList } from '@/api/role'
 import { getDeptNameList } from '@/api/dept'
@@ -172,9 +173,9 @@ export default {
       if (value === '') {
         callback(new Error('请再次输入密码'))
       } else if (this.isCreate && value !== this.form.password) {
-        callback(new Error('两次输入密码不一致'))
+        callback(new Error('两次输入密码不一致1'))
       } else if (!this.isCreate && value !== this.changePwdForm.newPassword) {
-        callback(new Error('两次输入密码不一致'))
+        callback(new Error('两次输入密码不一致2'))
       } else {
         callback()
       }
@@ -361,6 +362,8 @@ export default {
       if (this.isCreate) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
+            this.form.password = jsSha256.sha256(this.form.password)
+            this.form.confirm_password = this.form.password
             createUser(this.form).then(response => {
               this.getList()
               this.dialogFormVisible = false
@@ -402,6 +405,7 @@ export default {
           newPassword: '',
           confirmPwd: ''
         }
+        this.isCreate = false
         this.dialogPwdFormVisible = true
         this.$refs['changePwdForm'].clearValidate()
       }
@@ -409,6 +413,8 @@ export default {
     submitChangePwdForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
+          this.changePwdForm.newPassword = jsSha256.sha256(this.changePwdForm.newPassword)
+          this.changePwdForm.confirmPwd = this.changePwdForm.newPassword
           changePwd(this.changePwdForm).then(response => {
             this.dialogPwdFormVisible = false
             this.$message({
