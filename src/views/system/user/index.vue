@@ -5,8 +5,8 @@
     <el-button type="danger" @click="deleteCurrentRow">{{ $t('button.delete') }}</el-button>
     <el-button type="warning" @click="changePassword">{{ $t('button.changePassword') }}</el-button>
 
-    <el-input :placeholder="$t('table.account')" v-model="queryContent" style="width: 200px;" @keyup.enter.native="handleFilter"/>
-    <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('table.search') }}</el-button>
+    <el-input :placeholder="$t('table.account')" v-model="listQuery.queryContent" style="width: 200px; margin-left: 10px" @keyup.enter.native="getList"/>
+    <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="getList">{{ $t('table.search') }}</el-button>
 
     <el-table
       v-loading.body="listLoading"
@@ -181,13 +181,13 @@ export default {
       }
     }
     return {
-      queryContent: '',
       list: [],
       listLoading: true,
       total: 0,
       listQuery: {
         page: 1,
-        limit: 10
+        limit: 10,
+        queryContent: ''
       },
       currentRow: null,
       dialogFormVisible: false,
@@ -426,9 +426,6 @@ export default {
           return false
         }
       })
-    },
-    handleFilter() {
-
     }
   }
 }
