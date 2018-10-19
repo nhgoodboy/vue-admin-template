@@ -8,7 +8,7 @@ axios.defaults.withCredentials = true // 解决跨域请求sessionId不一致的
 // 创建axios实例
 const service = axios.create({
   baseURL: process.env.BASE_API, // api 的 base_url
-  timeout: 5000 // 请求超时时间
+  timeout: 10000 // 请求超时时间10秒
 })
 
 // request拦截器

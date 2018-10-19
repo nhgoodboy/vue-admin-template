@@ -8,7 +8,8 @@
             :on-error="uploadError"
             :show-file-list="false"
             :with-credentials="true"
-            action="http://localhost:8081/admin/fileInf/upload">
+            :headers="tokenHeader"
+            :action="uploadUrl">
             {{ $t('profile.change_avatar') }}
           </el-upload>
         </pan-thumb>
@@ -108,7 +109,9 @@ export default {
         phone: [{ required: false, trigger: 'blur', validator: validatePhone }]
       },
       formLabelWidth: '100px',
-      oldAvatar: ''
+      oldAvatar: '',
+      tokenHeader: { Authorization: '' },
+      uploadUrl: process.env.UPLOAD_URL
     }
   },
 
@@ -123,6 +126,7 @@ export default {
 
   mounted() {
     this.form = Object.assign({}, this.userInfo)
+    this.tokenHeader.Authorization = 'Bearer ' + this.userInfo.token
   },
 
   methods: {
