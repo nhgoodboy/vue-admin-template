@@ -3,6 +3,7 @@
     <el-button type="primary" @click="handleCreate">{{ $t('button.create') }}</el-button>
     <el-button type="success" @click="modifyCurrentRow">{{ $t('button.modify') }}</el-button>
     <el-button type="danger" @click="deleteCurrentRow">{{ $t('button.delete') }}</el-button>
+    <el-button type="primary" @click="permissionConfig">{{ $t('button.permissionConfig') }}</el-button>
 
     <el-table
       v-loading.body="listLoading"
@@ -35,7 +36,7 @@
         @current-change="handleCurrentPageChange"/>
     </div>
 
-    <el-dialog :visible.sync="dialogFormVisible" :title="formTitle" width="25%">
+    <el-dialog :visible.sync="dialogFormVisible" :title="formTitle" width="30%">
       <el-form ref="form" :model="form" :rules="createOrModifyRules">
         <el-form-item :label-width="formLabelWidth" :label="$t('table.name1')" prop="name">
           <el-input v-model="form.name" style="width: 200px"/>
@@ -56,15 +57,36 @@
         <el-button type="primary" @click="submitForm('form')">{{ $t('table.confirm') }}</el-button>
       </div>
     </el-dialog>
+
+    <el-dialog :visible.sync="permissionConfigDialog" :title="$t('button.permissionConfig')" width="50%">
+      <el-tree
+        :data="data2"
+        :default-expanded-keys="[2, 3]"
+        :default-checked-keys="[5]"
+        :props="defaultProps"
+        show-checkbox
+        node-key="id"/>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="permissionConfigDialog = false">{{ $t('table.cancel') }}</el-button>
+        <el-button type="primary" @click="submitPermissionConfig()">{{ $t('table.confirm') }}</el-button>
+      </div>
+    </el-dialog>
+    <!--<tree :visible="permissionConfigDialog" :close="handleClose"/>-->
   </div>
 </template>
 
 <script>
+import tree from './components/tree'
 import { fetchList, deleteRole, createRole, modifyRole } from '@/api/role'
 import { getRoleNameList } from '@/api/role'
 import { getDeptNameList } from '@/api/dept'
 
 export default {
+
+  components: {
+    tree
+  },
+
   data() {
     return {
       list: [],
@@ -91,6 +113,47 @@ export default {
         name: [{ required: true, trigger: 'blur', message: '请输入角色名称' }],
         parent_role: [{ required: true, trigger: 'change', message: '请选择父角色' }],
         dept: [{ required: true, trigger: 'change', message: '请选择部门' }]
+      },
+      permissionConfigDialog: false,
+
+      data2: [{
+        id: 1,
+        label: '一级 1',
+        children: [{
+          id: 4,
+          label: '二级 1-1',
+          children: [{
+            id: 9,
+            label: '三级 1-1-1'
+          }, {
+            id: 10,
+            label: '三级 1-1-2'
+          }]
+        }]
+      }, {
+        id: 2,
+        label: '一级 2',
+        children: [{
+          id: 5,
+          label: '二级 2-1'
+        }, {
+          id: 6,
+          label: '二级 2-2'
+        }]
+      }, {
+        id: 3,
+        label: '一级 3',
+        children: [{
+          id: 7,
+          label: '二级 3-1'
+        }, {
+          id: 8,
+          label: '二级 3-2'
+        }]
+      }],
+      defaultProps: {
+        children: 'children',
+        label: 'name'
       }
     }
   },
@@ -228,6 +291,49 @@ export default {
         return item === this.currentRow.name
       }
       return false
+    },
+    permissionConfig() {
+      this.permissionConfigDialog = true
+    },
+    handleClose() {
+      this.permissionConfigDialog = false
+    },
+
+    handleCheckChange(data, checked, indeterminate) {
+      console.log(data, checked, indeterminate)
+    },
+    handleNodeClick(data) {
+      console.log(data)
+    },
+    loadNode(node, resolve) {
+      if (node.level === 0) {
+        return resolve([{ name: 'region1' }, { name: 'region2' }])
+      }
+      if (node.level > 3) return resolve([])
+
+      let hasChild
+      if (node.data.name === 'region1') {
+        hasChild = true
+      } else if (node.data.name === 'region2') {
+        hasChild = false
+      } else {
+        hasChild = Math.random() > 0.5
+      }
+
+      setTimeout(() => {
+        let data
+        if (hasChild) {
+          data = [{
+            name: 'zone' + this.count++
+          }, {
+            name: 'zone' + this.count++
+          }]
+        } else {
+          data = []
+        }
+
+        resolve(data)
+      }, 500)
     }
   }
 }

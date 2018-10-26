@@ -187,7 +187,8 @@ export default {
     create: 'Create',
     modify: 'Modify',
     delete: 'Delete',
-    changePassword: 'Change Password'
+    changePassword: 'Change Password',
+    permissionConfig: 'Permission Config'
   },
   tooltip: {
     backToTop: 'BackToTop'

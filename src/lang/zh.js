@@ -187,7 +187,8 @@ export default {
     create: '新增',
     modify: '修改',
     delete: '删除',
-    changePassword: '更改密码'
+    changePassword: '更改密码',
+    permissionConfig: '权限配置'
   },
   tooltip: {
     backToTop: '返回顶部'
