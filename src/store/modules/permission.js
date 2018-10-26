@@ -5,9 +5,9 @@ import { asyncRouterMap, constantRouterMap } from '@/router'
  * @param roles
  * @param route
  */
-function hasPermission(roles, route) {
+function hasPermission(role, route) {
   if (route.meta && route.meta.roles) {
-    return roles.some(role => route.meta.roles.indexOf(role) >= 0)
+    return role => route.meta.roles.indexOf(role) >= 0
   } else {
     return true
   }
@@ -18,11 +18,12 @@ function hasPermission(roles, route) {
  * @param asyncRouterMap
  * @param roles
  */
-function filterAsyncRouter(asyncRouterMap, roles) {
+function filterAsyncRouter(asyncRouterMap, role) {
+  console.log('2:' + JSON.stringify(asyncRouterMap) + ' 3:' + JSON.stringify(role))
   const accessedRouters = asyncRouterMap.filter(route => {
-    if (hasPermission(roles, route)) {
+    if (hasPermission(role, route)) {
       if (route.children && route.children.length) {
-        route.children = filterAsyncRouter(route.children, roles)
+        route.children = filterAsyncRouter(route.children, role)
       }
       return true
     }
@@ -38,6 +39,7 @@ const permission = {
   },
   mutations: {
     SET_ROUTERS: (state, routers) => {
+      console.log('4:' + JSON.stringify(state) + ' 5:' + JSON.stringify(routers))
       state.addRouters = routers
       state.routers = constantRouterMap.concat(routers)
     }
@@ -45,12 +47,12 @@ const permission = {
   actions: {
     GenerateRoutes({ commit }, data) {
       return new Promise(resolve => {
-        const { roles } = data
+        const { role } = data
         let accessedRouters
-        if (roles.indexOf('admin') >= 0) {
+        if (role.indexOf('超级管理员') >= 0) {
           accessedRouters = asyncRouterMap
         } else {
-          accessedRouters = filterAsyncRouter(asyncRouterMap, roles)
+          accessedRouters = filterAsyncRouter(asyncRouterMap, role)
         }
         commit('SET_ROUTERS', accessedRouters)
         resolve()

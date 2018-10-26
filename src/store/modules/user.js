@@ -9,7 +9,6 @@ const user = {
     name: '',
     sex: '',
     role: '',
-    roles: [],
     dept: '',
     email: '',
     phone: '',
@@ -35,9 +34,6 @@ const user = {
     },
     SET_ROLE: (state, role) => {
       state.role = role
-    },
-    SET_ROLES: (state, roles) => {
-      state.roles = roles
     },
     SET_DEPT: (state, dept) => {
       state.dept = dept
@@ -77,11 +73,11 @@ const user = {
       return new Promise((resolve, reject) => {
         getInfo().then(response => {
           const data = response.data
-          if (data.roles && data.roles.length > 0) { // 验证返回的roles是否是一个非空数组
-            commit('SET_ROLES', data.roles)
-          } else {
-            reject('getInfo: roles must be a non-null array !')
-          }
+          // if (data.role && data.role.length > 0) { // 验证返回的roles是否是一个非空数组
+          //   commit('SET_ROLE', data.role)
+          // } else {
+          //   reject('getInfo: roles must be a non-null array !')
+          // }
           commit('SET_AVATAR', process.env.BASE_API + data.avatar)
           commit('SET_ACCOUNT', data.account)
           commit('SET_NAME', data.name)
@@ -99,23 +95,12 @@ const user = {
       })
     },
 
-    ChangeAvatar({ commit, state }) {
-      // return new Promise((resolve, reject) => {
-      //   getTempAvatar(state.token).then(() => {
-      //     commit('SET_AVATAR', '')
-      //     resolve()
-      //   }).catch(error => {
-      //     reject(error)
-      //   })
-      // })
-    },
-
     // 登出
     LogOut({ commit, state }) {
       return new Promise((resolve, reject) => {
         logout(state.token).then(() => {
           commit('SET_TOKEN', '')
-          commit('SET_ROLES', [])
+          commit('SET_ROLE', '')
           removeToken()
           resolve()
         }).catch(error => {

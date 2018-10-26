@@ -17,9 +17,6 @@
         :label="$t('table.name1')"
         prop="name"/>
       <el-table-column
-        :label="$t('table.parent_role')"
-        prop="parent_role"/>
-      <el-table-column
         :label="$t('table.dept')"
         prop="dept"/>
     </el-table>
@@ -40,11 +37,6 @@
       <el-form ref="form" :model="form" :rules="createOrModifyRules">
         <el-form-item :label-width="formLabelWidth" :label="$t('table.name1')" prop="name">
           <el-input v-model="form.name" style="width: 200px"/>
-        </el-form-item>
-        <el-form-item :label-width="formLabelWidth" :label="$t('table.parent_role')" prop="parent_role">
-          <el-select v-model="form.parent_role">
-            <el-option v-for="item in roleNameList" :key="item" :label="item" :value="item" :disabled="handleDisable(item)"/>
-          </el-select>
         </el-form-item>
         <el-form-item :label-width="formLabelWidth" :label="$t('table.dept')" prop="dept">
           <el-select v-model="form.dept">
@@ -76,16 +68,11 @@
 </template>
 
 <script>
-import tree from './components/tree'
 import { fetchList, deleteRole, createRole, modifyRole } from '@/api/role'
 import { getRoleNameList } from '@/api/role'
 import { getDeptNameList } from '@/api/dept'
 
 export default {
-
-  components: {
-    tree
-  },
 
   data() {
     return {
@@ -106,7 +93,6 @@ export default {
       form: {
         id: undefined,
         name: '',
-        parent_role: '',
         dept: ''
       },
       createOrModifyRules: {
