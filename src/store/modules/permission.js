@@ -7,8 +7,11 @@ import { asyncRouterMap, constantRouterMap } from '@/router'
  */
 function hasPermission(role, route) {
   if (route.meta && route.meta.roles) {
-    return role => route.meta.roles.indexOf(role) >= 0
+    console.log('6:' + JSON.stringify(role) + ' 7:' + JSON.stringify(route))
+    console.log(role => route.meta.roles.indexOf(role) >= 0)
+    return route.meta.roles.indexOf(role) >= 0
   } else {
+    console.log('what...')
     return true
   }
 }
