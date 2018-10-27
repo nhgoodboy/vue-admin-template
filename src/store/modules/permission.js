@@ -5,11 +5,10 @@ import { asyncRouterMap, constantRouterMap } from '@/router'
  * @param roles
  * @param route
  */
-function hasPermission(role, route) {
-  if (route.meta && route.meta.roles) {
-    console.log('6:' + JSON.stringify(role) + ' 7:' + JSON.stringify(route))
-    console.log(role => route.meta.roles.indexOf(role) >= 0)
-    return route.meta.roles.indexOf(role) >= 0
+function hasPermission(menus, route) {
+  if (route.meta && route.meta.code) {
+    console.log('6:' + JSON.stringify(menus instanceof Set) + ' 7:' + JSON.stringify(route))
+    return new Set(menus).has(route.meta.code)
   } else {
     console.log('what...')
     return true
@@ -21,12 +20,12 @@ function hasPermission(role, route) {
  * @param asyncRouterMap
  * @param roles
  */
-function filterAsyncRouter(asyncRouterMap, role) {
-  console.log('2:' + JSON.stringify(asyncRouterMap) + ' 3:' + JSON.stringify(role))
+function filterAsyncRouter(asyncRouterMap, menus) {
+  console.log('2:' + JSON.stringify(asyncRouterMap) + ' 3:' + JSON.stringify(menus))
   const accessedRouters = asyncRouterMap.filter(route => {
-    if (hasPermission(role, route)) {
+    if (hasPermission(menus, route)) {
       if (route.children && route.children.length) {
-        route.children = filterAsyncRouter(route.children, role)
+        route.children = filterAsyncRouter(route.children, menus)
       }
       return true
     }
@@ -50,13 +49,13 @@ const permission = {
   actions: {
     GenerateRoutes({ commit }, data) {
       return new Promise(resolve => {
-        const { role } = data
-        let accessedRouters
-        if (role.indexOf('超级管理员') >= 0) {
-          accessedRouters = asyncRouterMap
-        } else {
-          accessedRouters = filterAsyncRouter(asyncRouterMap, role)
-        }
+        const { menus } = data
+        // if (role.indexOf('超级管理员') >= 0) {
+        //   accessedRouters = asyncRouterMap
+        // } else {
+        //   accessedRouters = filterAsyncRouter(asyncRouterMap, role)
+        // }
+        const accessedRouters = filterAsyncRouter(asyncRouterMap, menus)
         commit('SET_ROUTERS', accessedRouters)
         resolve()
       })

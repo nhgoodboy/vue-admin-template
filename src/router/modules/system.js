@@ -7,25 +7,25 @@ const systemRouter = {
   component: Layout,
   redirect: '/system/user',
   name: 'system',
-  meta: { title: 'system', icon: 'example', roles: ['超级管理员'] },
+  meta: { title: 'system', icon: 'example', roles: ['超级管理员'], code: 'system' },
   children: [
     {
       path: 'user',
       name: 'user',
       component: () => import('@/views/system/user/index'),
-      meta: { title: 'user', icon: 'form' }
+      meta: { title: 'user', icon: 'form', code: 'user' }
     },
     {
       path: 'role',
       name: 'role',
       component: () => import('@/views/system/role/index'),
-      meta: { title: 'role', icon: 'form' }
+      meta: { title: 'role', icon: 'form', code: 'role' }
     },
     {
       path: 'dept',
       name: 'dept',
       component: () => import('@/views/system/dept/index'),
-      meta: { title: 'dept', icon: 'form' }
+      meta: { title: 'dept', icon: 'form', code: 'dept' }
     }
   ]
 }

@@ -13,7 +13,8 @@ const user = {
     email: '',
     phone: '',
     birthday: '',
-    createTime: ''
+    createTime: '',
+    menus: null
   },
 
   mutations: {
@@ -49,6 +50,9 @@ const user = {
     },
     SET_CREATETIME: (state, createTime) => {
       state.createTime = createTime
+    },
+    SET_MENUS: (state, menus) => {
+      state.menus = menus
     }
   },
 
@@ -88,6 +92,9 @@ const user = {
           commit('SET_PHONE', data.phone)
           commit('SET_BIRTHDAY', data.birthday)
           commit('SET_CREATETIME', data.createTime)
+          console.log('set:', JSON.stringify(data.menus))
+          const menusSet = new Set(data.menus)
+          commit('SET_MENUS', menusSet)
           resolve(response)
         }).catch(error => {
           reject(error)
