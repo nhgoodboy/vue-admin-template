@@ -77,11 +77,6 @@ const user = {
       return new Promise((resolve, reject) => {
         getInfo().then(response => {
           const data = response.data
-          // if (data.role && data.role.length > 0) { // 验证返回的roles是否是一个非空数组
-          //   commit('SET_ROLE', data.role)
-          // } else {
-          //   reject('getInfo: roles must be a non-null array !')
-          // }
           commit('SET_AVATAR', process.env.BASE_API + data.avatar)
           commit('SET_ACCOUNT', data.account)
           commit('SET_NAME', data.name)
@@ -92,9 +87,7 @@ const user = {
           commit('SET_PHONE', data.phone)
           commit('SET_BIRTHDAY', data.birthday)
           commit('SET_CREATETIME', data.createTime)
-          console.log('set:', JSON.stringify(data.menus))
-          const menusSet = new Set(data.menus)
-          commit('SET_MENUS', menusSet)
+          commit('SET_MENUS', new Set(data.menus))
           resolve(response)
         }).catch(error => {
           reject(error)
