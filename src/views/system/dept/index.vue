@@ -1,8 +1,8 @@
 <template>
   <div class="app-container">
-    <el-button type="primary" @click="handleCreate">{{ $t('button.create') }}</el-button>
-    <el-button type="success" @click="modifyCurrentRow">{{ $t('button.modify') }}</el-button>
-    <el-button type="danger" @click="deleteCurrentRow">{{ $t('button.delete') }}</el-button>
+    <el-button v-if="checkPermission('dept_add')" type="primary" @click="handleCreate">{{ $t('button.create') }}</el-button>
+    <el-button v-if="checkPermission('dept_edit')" type="success" @click="modifyCurrentRow">{{ $t('button.modify') }}</el-button>
+    <el-button v-if="checkPermission('dept_delete')" type="danger" @click="deleteCurrentRow">{{ $t('button.delete') }}</el-button>
 
     <el-table
       v-loading.body="listLoading"
@@ -54,6 +54,7 @@
 <script>
 import { getDepts, deleteDept, createDept, modifyDept } from '@/api/dept'
 import { getDeptNameList } from '@/api/dept'
+import checkPermission from '@/utils/permission' // 权限判断函数
 
 export default {
   data() {
@@ -88,6 +89,7 @@ export default {
   },
 
   methods: {
+    checkPermission,
     getList() {
       this.listLoading = true
       getDepts(this.listQuery).then(response => {

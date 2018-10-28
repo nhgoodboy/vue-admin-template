@@ -1,9 +1,9 @@
 <template>
   <div class="app-container">
-    <el-button type="primary" @click="handleCreate">{{ $t('button.create') }}</el-button>
-    <el-button type="success" @click="modifyCurrentRow">{{ $t('button.modify') }}</el-button>
-    <el-button type="danger" @click="deleteCurrentRow">{{ $t('button.delete') }}</el-button>
-    <el-button type="primary" @click="permissionConfig">{{ $t('button.permissionConfig') }}</el-button>
+    <el-button v-if="checkPermission('role_add')" type="primary" @click="handleCreate">{{ $t('button.create') }}</el-button>
+    <el-button v-if="checkPermission('role_edit')" type="success" @click="modifyCurrentRow">{{ $t('button.modify') }}</el-button>
+    <el-button v-if="checkPermission('role_delete')" type="danger" @click="deleteCurrentRow">{{ $t('button.delete') }}</el-button>
+    <el-button v-if="checkPermission('role_permission_config')" type="primary" @click="permissionConfig">{{ $t('button.permissionConfig') }}</el-button>
 
     <el-table
       v-loading.body="listLoading"
@@ -72,9 +72,9 @@
 import { fetchList, deleteRole, createRole, modifyRole } from '@/api/role'
 import { getRoleNameList, getMenusTree, changePermission } from '@/api/role'
 import { getDeptNameList } from '@/api/dept'
+import checkPermission from '@/utils/permission' // 权限判断函数
 
 export default {
-
   data() {
     return {
       list: [],
@@ -116,6 +116,7 @@ export default {
   },
 
   methods: {
+    checkPermission,
     getList() {
       this.listLoading = true
       fetchList(this.listQuery).then(response => {

@@ -1,9 +1,9 @@
 <template>
   <div class="app-container">
-    <el-button type="primary" @click="handleCreate">{{ $t('button.create') }}</el-button>
-    <el-button type="success" @click="modifyCurrentRow">{{ $t('button.modify') }}</el-button>
-    <el-button type="danger" @click="deleteCurrentRow">{{ $t('button.delete') }}</el-button>
-    <el-button type="warning" @click="changePassword">{{ $t('button.changePassword') }}</el-button>
+    <el-button v-if="checkPermission('user_add')" type="primary" @click="handleCreate">{{ $t('button.create') }}</el-button>
+    <el-button v-if="checkPermission('user_edit')" type="success" @click="modifyCurrentRow">{{ $t('button.modify') }}</el-button>
+    <el-button v-if="checkPermission('user_delete')" type="danger" @click="deleteCurrentRow">{{ $t('button.delete') }}</el-button>
+    <el-button v-if="checkPermission('user_change_pwd')" type="warning" @click="changePassword">{{ $t('button.changePassword') }}</el-button>
 
     <el-input :placeholder="$t('table.account')" v-model="listQuery.queryContent" style="width: 200px; margin-left: 10px" @keyup.enter.native="getList"/>
     <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="getList">{{ $t('table.search') }}</el-button>
@@ -137,6 +137,7 @@ import { getRoleNameList } from '@/api/role'
 import { getDeptNameList } from '@/api/dept'
 import waves from '@/directive/waves' // 水波纹指令
 import BackToTop from '@/components/BackToTop'
+import checkPermission from '@/utils/permission' // 权限判断函数
 
 export default {
   directives: {
@@ -257,6 +258,7 @@ export default {
   },
 
   methods: {
+    checkPermission,
     getList() {
       this.listLoading = true
       fetchList(this.listQuery).then(response => {
