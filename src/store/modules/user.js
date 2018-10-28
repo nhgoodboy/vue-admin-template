@@ -14,7 +14,7 @@ const user = {
     phone: '',
     birthday: '',
     createTime: '',
-    menus: null
+    menus: null // Set类型
   },
 
   mutations: {
@@ -100,7 +100,7 @@ const user = {
       return new Promise((resolve, reject) => {
         logout(state.token).then(() => {
           commit('SET_TOKEN', '')
-          commit('SET_ROLE', '')
+          commit('SET_MENUS', null)
           removeToken()
           resolve()
         }).catch(error => {

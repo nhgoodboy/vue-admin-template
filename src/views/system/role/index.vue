@@ -52,10 +52,10 @@
 
     <el-dialog :visible.sync="permissionConfigDialog" :title="$t('button.permissionConfig')" width="50%">
       <el-tree
-        :data="data2"
-        :default-expanded-keys="[2, 3]"
-        :default-checked-keys="[5]"
-        :props="defaultProps"
+        :data="menusList"
+        :default-checked-keys="checkedMenuIds"
+        :props="menuProps"
+        :default-expand-all="true"
         show-checkbox
         node-key="id"/>
       <div slot="footer" class="dialog-footer">
@@ -63,13 +63,12 @@
         <el-button type="primary" @click="submitPermissionConfig()">{{ $t('table.confirm') }}</el-button>
       </div>
     </el-dialog>
-    <!--<tree :visible="permissionConfigDialog" :close="handleClose"/>-->
   </div>
 </template>
 
 <script>
 import { fetchList, deleteRole, createRole, modifyRole } from '@/api/role'
-import { getRoleNameList } from '@/api/role'
+import { getRoleNameList, getMenusTree } from '@/api/role'
 import { getDeptNameList } from '@/api/dept'
 
 export default {
@@ -101,43 +100,44 @@ export default {
         dept: [{ required: true, trigger: 'change', message: '请选择部门' }]
       },
       permissionConfigDialog: false,
+      checkedMenuIds: [],
 
-      data2: [{
-        id: 1,
-        label: '一级 1',
+      menusList: [{
+        code: 1,
+        name: '一级 1',
         children: [{
-          id: 4,
-          label: '二级 1-1',
+          code: 4,
+          name: '二级 1-1',
           children: [{
-            id: 9,
-            label: '三级 1-1-1'
+            code: 9,
+            name: '三级 1-1-1'
           }, {
-            id: 10,
-            label: '三级 1-1-2'
+            code: 10,
+            name: '三级 1-1-2'
           }]
         }]
       }, {
-        id: 2,
-        label: '一级 2',
+        code: 2,
+        name: '一级 2',
         children: [{
-          id: 5,
-          label: '二级 2-1'
+          code: 5,
+          name: '二级 2-1'
         }, {
-          id: 6,
-          label: '二级 2-2'
+          code: 6,
+          name: '二级 2-2'
         }]
       }, {
-        id: 3,
-        label: '一级 3',
+        code: 3,
+        name: '一级 3',
         children: [{
-          id: 7,
-          label: '二级 3-1'
+          code: 7,
+          name: '二级 3-1'
         }, {
-          id: 8,
-          label: '二级 3-2'
+          code: 8,
+          name: '二级 3-2'
         }]
       }],
-      defaultProps: {
+      menuProps: {
         children: 'children',
         label: 'name'
       }
@@ -280,9 +280,10 @@ export default {
     },
     permissionConfig() {
       this.permissionConfigDialog = true
-    },
-    handleClose() {
-      this.permissionConfigDialog = false
+      getMenusTree(this.currentRow.id).then(resp => {
+        this.menusList = resp.data.menusList
+        this.checkedMenuIds = resp.data.checkedMenuIds
+      })
     },
 
     handleCheckChange(data, checked, indeterminate) {

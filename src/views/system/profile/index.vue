@@ -100,7 +100,7 @@ export default {
       }
     }
     return {
-      form: '',
+      form: {},
       isEdit: false,
       editRules: {
         name: [{ required: true, trigger: 'blur', message: '请输入性名' }],

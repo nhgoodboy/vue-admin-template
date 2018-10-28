@@ -40,3 +40,10 @@ export function modifyRole(form) {
     data: form
   })
 }
+
+export function getMenusTree(roleId) {
+  return request({
+    url: `/admin/role/menusTree/${roleId}`,
+    method: 'get'
+  })
+}
