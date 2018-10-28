@@ -50,17 +50,19 @@
       </div>
     </el-dialog>
 
-    <el-dialog :visible.sync="permissionConfigDialog" :title="$t('button.permissionConfig')" width="50%">
+    <el-dialog :visible.sync="permissionConfigDialog" :title="$t('button.permissionConfig')" width="30%">
       <el-tree
+        ref="menuTree"
         :data="menusList"
         :default-checked-keys="checkedMenuIds"
         :props="menuProps"
         :default-expand-all="true"
         show-checkbox
+        check-strictly
         node-key="id"/>
       <div slot="footer" class="dialog-footer">
         <el-button @click="permissionConfigDialog = false">{{ $t('table.cancel') }}</el-button>
-        <el-button type="primary" @click="submitPermissionConfig()">{{ $t('table.confirm') }}</el-button>
+        <el-button type="primary" @click="submitPermissionConfig">{{ $t('table.confirm') }}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -68,7 +70,7 @@
 
 <script>
 import { fetchList, deleteRole, createRole, modifyRole } from '@/api/role'
-import { getRoleNameList, getMenusTree } from '@/api/role'
+import { getRoleNameList, getMenusTree, changePermission } from '@/api/role'
 import { getDeptNameList } from '@/api/dept'
 
 export default {
@@ -101,42 +103,7 @@ export default {
       },
       permissionConfigDialog: false,
       checkedMenuIds: [],
-
-      menusList: [{
-        code: 1,
-        name: '一级 1',
-        children: [{
-          code: 4,
-          name: '二级 1-1',
-          children: [{
-            code: 9,
-            name: '三级 1-1-1'
-          }, {
-            code: 10,
-            name: '三级 1-1-2'
-          }]
-        }]
-      }, {
-        code: 2,
-        name: '一级 2',
-        children: [{
-          code: 5,
-          name: '二级 2-1'
-        }, {
-          code: 6,
-          name: '二级 2-2'
-        }]
-      }, {
-        code: 3,
-        name: '一级 3',
-        children: [{
-          code: 7,
-          name: '二级 3-1'
-        }, {
-          code: 8,
-          name: '二级 3-2'
-        }]
-      }],
+      menusList: [],
       menuProps: {
         children: 'children',
         label: 'name'
@@ -279,48 +246,34 @@ export default {
       return false
     },
     permissionConfig() {
-      this.permissionConfigDialog = true
-      getMenusTree(this.currentRow.id).then(resp => {
-        this.menusList = resp.data.menusList
-        this.checkedMenuIds = resp.data.checkedMenuIds
-      })
-    },
-
-    handleCheckChange(data, checked, indeterminate) {
-      console.log(data, checked, indeterminate)
-    },
-    handleNodeClick(data) {
-      console.log(data)
-    },
-    loadNode(node, resolve) {
-      if (node.level === 0) {
-        return resolve([{ name: 'region1' }, { name: 'region2' }])
-      }
-      if (node.level > 3) return resolve([])
-
-      let hasChild
-      if (node.data.name === 'region1') {
-        hasChild = true
-      } else if (node.data.name === 'region2') {
-        hasChild = false
+      if (!this.currentRow) {
+        this.$message({
+          message: '请先选择角色，再进行权限配置',
+          type: 'warning'
+        })
       } else {
-        hasChild = Math.random() > 0.5
+        this.permissionConfigDialog = true
+        getMenusTree(this.currentRow.id).then(resp => {
+          this.menusList = resp.data.menusList
+          this.checkedMenuIds = resp.data.checkedMenuIds
+        })
       }
-
-      setTimeout(() => {
-        let data
-        if (hasChild) {
-          data = [{
-            name: 'zone' + this.count++
-          }, {
-            name: 'zone' + this.count++
-          }]
-        } else {
-          data = []
-        }
-
-        resolve(data)
-      }, 500)
+    },
+    submitPermissionConfig() {
+      if (this.currentRow.id === 1) {
+        this.$message({
+          message: '不允许修改超级管理员的权限',
+          type: 'warning'
+        })
+      } else {
+        changePermission(this.currentRow.id, this.$refs.menuTree.getCheckedKeys()).then(resp => {
+          this.permissionConfigDialog = false
+          this.$message({
+            type: 'success',
+            message: '修改成功'
+          })
+        })
+      }
     }
   }
 }

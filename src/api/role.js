@@ -47,3 +47,12 @@ export function getMenusTree(roleId) {
     method: 'get'
   })
 }
+
+export function changePermission(roleId, menuIds) {
+  return request({
+    url: `/admin/role/menusTree/${roleId}`,
+    method: 'put',
+    data: menuIds
+  })
+}
+
