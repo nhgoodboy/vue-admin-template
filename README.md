@@ -1,3 +1,6 @@
+基于vue-admin-template实现的通用后台管理系统，改进了权限管理（实现动态权限管理）。后端参看jzframe项目。
+----------------------------------------------------------------------------
+
 # vue-admin-template
 
 > A minimal vue admin template with Element UI & axios & iconfont & permission control & lint
