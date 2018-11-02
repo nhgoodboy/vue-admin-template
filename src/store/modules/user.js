@@ -14,7 +14,7 @@ const user = {
     phone: '',
     birthday: '',
     createTime: '',
-    menus: null // Set类型
+    permissions: null // Set类型
   },
 
   mutations: {
@@ -51,8 +51,8 @@ const user = {
     SET_CREATETIME: (state, createTime) => {
       state.createTime = createTime
     },
-    SET_MENUS: (state, menus) => {
-      state.menus = menus
+    SET_PERMISSIONS: (state, permissions) => {
+      state.permissions = permissions
     }
   },
 
@@ -87,7 +87,7 @@ const user = {
           commit('SET_PHONE', data.phone)
           commit('SET_BIRTHDAY', data.birthday)
           commit('SET_CREATETIME', data.createTime)
-          commit('SET_MENUS', new Set(data.menus))
+          commit('SET_PERMISSIONS', new Set(data.permissions))
           resolve(response)
         }).catch(error => {
           reject(error)
@@ -100,7 +100,7 @@ const user = {
       return new Promise((resolve, reject) => {
         logout(state.token).then(() => {
           commit('SET_TOKEN', '')
-          commit('SET_MENUS', null)
+          commit('SET_PERMISSIONS', null)
           removeToken()
           resolve()
         }).catch(error => {

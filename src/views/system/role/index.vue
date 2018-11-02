@@ -52,10 +52,10 @@
 
     <el-dialog :visible.sync="permissionConfigDialog" :title="$t('button.permissionConfig')" width="30%">
       <el-tree
-        ref="menuTree"
-        :data="menusList"
-        :default-checked-keys="checkedMenuIds"
-        :props="menuProps"
+        ref="permissionTree"
+        :data="permissionsList"
+        :default-checked-keys="checkedPermissionIds"
+        :props="permissionProps"
         :default-expand-all="true"
         show-checkbox
         check-strictly
@@ -70,7 +70,7 @@
 
 <script>
 import { fetchList, deleteRole, createRole, modifyRole } from '@/api/role'
-import { getRoleNameList, getMenusTree, changePermission } from '@/api/role'
+import { getRoleNameList, getPermissionsTree, changePermission } from '@/api/role'
 import { getDeptNameList } from '@/api/dept'
 import checkPermission from '@/utils/permission' // 权限判断函数
 
@@ -102,9 +102,9 @@ export default {
         dept: [{ required: true, trigger: 'change', message: '请选择部门' }]
       },
       permissionConfigDialog: false,
-      checkedMenuIds: [],
-      menusList: [],
-      menuProps: {
+      checkedPermissionIds: [],
+      permissionsList: [],
+      permissionProps: {
         children: 'children',
         label: 'name'
       }
@@ -254,9 +254,9 @@ export default {
         })
       } else {
         this.permissionConfigDialog = true
-        getMenusTree(this.currentRow.id).then(resp => {
-          this.menusList = resp.data.menusList
-          this.checkedMenuIds = resp.data.checkedMenuIds
+        getPermissionsTree(this.currentRow.id).then(resp => {
+          this.permissionsList = resp.data.permissionsList
+          this.checkedPermissionIds = resp.data.checkedPermissionIds
         })
       }
     },
@@ -267,7 +267,7 @@ export default {
           type: 'warning'
         })
       } else {
-        changePermission(this.currentRow.id, this.$refs.menuTree.getCheckedKeys()).then(resp => {
+        changePermission(this.currentRow.id, this.$refs.permissionTree.getCheckedKeys()).then(resp => {
           this.permissionConfigDialog = false
           this.$message({
             type: 'success',

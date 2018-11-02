@@ -41,18 +41,18 @@ export function modifyRole(form) {
   })
 }
 
-export function getMenusTree(roleId) {
+export function getPermissionsTree(roleId) {
   return request({
-    url: `/admin/role/menusTree/${roleId}`,
+    url: `/admin/role/permissionsTree/${roleId}`,
     method: 'get'
   })
 }
 
-export function changePermission(roleId, menuIds) {
+export function changePermission(roleId, permissionIds) {
   return request({
-    url: `/admin/role/menusTree/${roleId}`,
+    url: `/admin/role/permissionsTree/${roleId}`,
     method: 'put',
-    data: menuIds
+    data: permissionIds
   })
 }
 

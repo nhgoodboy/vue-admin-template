@@ -20,10 +20,10 @@ router.beforeEach((to, from, next) => {
       next({ path: '/' })
       NProgress.done() // if current page is dashboard will not trigger	afterEach hook, so manually handle it
     } else {
-      if (!store.getters.menus) {
+      if (!store.getters.permissions) {
         store.dispatch('GetInfo').then(res => { // 拉取用户信息
-          const menus = store.getters.menus // res.data.menus 是 Object类型, store.getters.menus已转为Set类型
-          store.dispatch('GenerateRoutes', menus).then(() => { // 根据roles权限生成可访问的路由表
+          const permissions = store.getters.permissions // res.data.permissions 是 Object类型, store.getters.permissions已转为Set类型
+          store.dispatch('GenerateRoutes', permissions).then(() => { // 根据roles权限生成可访问的路由表
             router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
             next({ ...to, replace: true }) // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
           })
