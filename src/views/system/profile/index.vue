@@ -75,7 +75,7 @@
 <script>
 import PanThumb from '@/components/PanThumb'
 import { mapGetters } from 'vuex'
-import { editUserInfo, changeAvatar } from '@/api/user'
+import { editUserInfo, changeAvatar } from '@/api/userInfo'
 
 export default {
   components: { PanThumb },

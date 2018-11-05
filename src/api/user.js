@@ -45,17 +45,3 @@ export function changePwd(form) {
   })
 }
 
-export function editUserInfo(form) {
-  return request({
-    url: '/admin/user/editUserInfo',
-    method: 'post',
-    data: form
-  })
-}
-
-export function changeAvatar(userHeadId) { // REST风格
-  return request({
-    url: `/admin/user/changeAvatar/${userHeadId}`, // 字符串带参数写法
-    method: 'put'
-  })
-}

@@ -11,13 +11,6 @@ export function login(username, password) {
   })
 }
 
-export function getInfo() {
-  return request({
-    url: '/admin/user/userInfo',
-    method: 'get'
-  })
-}
-
 export function logout() {
   return request({
     url: '/doLogout',
