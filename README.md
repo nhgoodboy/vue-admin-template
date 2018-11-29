@@ -12,7 +12,6 @@
 2、后端是基于springboot。实现了数据的增删查改（mybatis、springdatajpa、mysql）、图片上传及小图裁剪处理（lmax-disrupter）、权限管理（shiro）、前
 后端数据通信（jwt）、项目持续集成部署（git、jenkins、docker）、缓存处理（redis）。
 
-3、个人业余时间项目，项目持续完成更新中。
 ----------------------------------------------------------------------------
 
 # vue-admin-template
